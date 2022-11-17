@@ -1,4 +1,4 @@
-package com.project.product.domain;
+package com.project.product.domain.product;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,25 +9,24 @@ import javax.persistence.*;
 
 @Entity
 @Table
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class BoardImage {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_image_id")
     private Long id;
 
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Builder
-    public BoardImage(Long id, String image, Board board) {
+    public ProductImage(Long id, String image, Product product) {
         this.id = id;
         this.image = image;
-        this.board = board;
+        this.product = product;
     }
 }

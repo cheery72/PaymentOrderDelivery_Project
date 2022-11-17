@@ -1,7 +1,8 @@
-package com.project.product.domain;
+package com.project.product.domain.product;
 
+import com.project.product.domain.member.ShoppingBasket;
+import com.project.product.domain.order.Order;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +36,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopping_basket_id")
+    private ShoppingBasket shoppingBasket;
 
 }

@@ -1,5 +1,4 @@
-package com.project.product.domain;
-
+package com.project.product.domain.member;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,24 +6,22 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Table
 @Entity
+@Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewComment {
+public class MemberCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_comment_id")
     private Long id;
 
-    private String memberId;
+    private String name;
 
-    private String content;
-
-    private int likes = 0;
+    private int discount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
-    private Review review;
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 }
