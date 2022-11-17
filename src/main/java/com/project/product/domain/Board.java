@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -27,6 +29,10 @@ public class Board {
     private boolean isCheck;
 
     private boolean isDelete;
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardImage> images = new ArrayList<>();
+
 
     @Builder
     public Board(Long id, String memberId, String title, String content, boolean isCheck, boolean isDelete) {
