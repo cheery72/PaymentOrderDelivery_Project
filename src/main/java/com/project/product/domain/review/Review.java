@@ -1,4 +1,4 @@
-package com.project.product.domain;
+package com.project.product.domain.review;
 
 import lombok.AccessLevel;
 import lombok.Builder;

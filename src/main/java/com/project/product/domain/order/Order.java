@@ -1,5 +1,7 @@
-package com.project.product.domain;
+package com.project.product.domain.order;
 
+import com.project.product.domain.product.Product;
+import com.project.product.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,26 +11,18 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String purchaser;
-
-    private String addressCity;
-
-    private String addressGu;
-
-    private String addressDong;
-
-    private String addressDetail;
 
     private int totalPrice;
 
@@ -50,19 +44,17 @@ public class Order {
 
     private OrderStatus orderStatus;
 
-    private int receivePoint;
-
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Builder
-    public Order(Long id, String purchaser, String addressCity, String addressGu, String addressDong, String addressDetail, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, String bankInfo, OrderStatus orderStatus, int receivePoint, List<Product> products) {
+    public Order(UUID id, String purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, String bankInfo, OrderStatus orderStatus, List<Product> products) {
         this.id = id;
         this.purchaser = purchaser;
-        this.addressCity = addressCity;
-        this.addressGu = addressGu;
-        this.addressDong = addressDong;
-        this.addressDetail = addressDetail;
         this.totalPrice = totalPrice;
         this.usePoint = usePoint;
         this.purchaserMemo = purchaserMemo;
@@ -73,7 +65,6 @@ public class Order {
         this.payType = payType;
         this.bankInfo = bankInfo;
         this.orderStatus = orderStatus;
-        this.receivePoint = receivePoint;
         this.products = products;
     }
 }
