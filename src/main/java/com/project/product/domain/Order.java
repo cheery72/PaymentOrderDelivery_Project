@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -48,11 +50,13 @@ public class Order {
 
     private OrderStatus orderStatus;
 
-    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Product product;
+    private int receivePoint;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
     @Builder
-    public Order(Long id, String purchaser, String addressCity, String addressGu, String addressDong, String addressDetail, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, String bankInfo, OrderStatus orderStatus, Product product) {
+    public Order(Long id, String purchaser, String addressCity, String addressGu, String addressDong, String addressDetail, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, String bankInfo, OrderStatus orderStatus, int receivePoint, List<Product> products) {
         this.id = id;
         this.purchaser = purchaser;
         this.addressCity = addressCity;
@@ -69,6 +73,7 @@ public class Order {
         this.payType = payType;
         this.bankInfo = bankInfo;
         this.orderStatus = orderStatus;
-        this.product = product;
+        this.receivePoint = receivePoint;
+        this.products = products;
     }
 }
