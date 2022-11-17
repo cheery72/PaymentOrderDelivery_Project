@@ -33,6 +33,8 @@ public class Board {
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardImage> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Board(Long id, String memberId, String title, String content, boolean isCheck, boolean isDelete) {

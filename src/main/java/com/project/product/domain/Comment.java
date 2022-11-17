@@ -7,27 +7,30 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Table
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Getter
-public class BoardImage {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_image_id")
+    @Column(name = "comment_id")
     private Long id;
 
-    private String image;
+    private String memberId;
+
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
     @Builder
-    public BoardImage(Long id, String image, Board board) {
+    public Comment(Long id, String memberId, String content, Board board) {
         this.id = id;
-        this.image = image;
+        this.memberId = memberId;
+        this.content = content;
         this.board = board;
     }
 }
