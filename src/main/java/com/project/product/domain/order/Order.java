@@ -2,6 +2,7 @@ package com.project.product.domain.order;
 
 import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
+import com.project.product.dto.OrderCreate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,12 +37,15 @@ public class Order {
 
     private LocalDateTime approveDateTime;
 
-    private ApproveStatus approveStatus;
-
-    private PayType payType;
-
     private String bankInfo;
 
+    @Enumerated(EnumType.STRING)
+    private ApproveStatus approveStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PayType payType;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)

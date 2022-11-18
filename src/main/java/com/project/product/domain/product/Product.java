@@ -30,6 +30,7 @@ public class Product {
 
     private String category;
 
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)

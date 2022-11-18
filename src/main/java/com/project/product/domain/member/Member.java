@@ -33,8 +33,6 @@ public class Member {
 
     private int receivePoint;
 
-    private MemberStatus memberStatus;
-
     private String addressCity;
 
     private String addressGu;
@@ -43,8 +41,14 @@ public class Member {
 
     private String addressDetail;
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus;
+
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<MemberCoupon> memberCoupon;
+    private List<Card> cards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<MemberCoupon> memberCoupon = new ArrayList<>();
 
     @OneToOne(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private ShoppingBasket shoppingBasket;
@@ -52,5 +56,35 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
+    public Member(UUID id, String email, String password, String name, String image, int point, int usedPoint, int receivePoint, MemberStatus memberStatus, String addressCity, String addressGu, String addressDong, String addressDetail, List<MemberCoupon> memberCoupon, ShoppingBasket shoppingBasket, List<Order> orders) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.image = image;
+        this.point = point;
+        this.usedPoint = usedPoint;
+        this.receivePoint = receivePoint;
+        this.memberStatus = memberStatus;
+        this.addressCity = addressCity;
+        this.addressGu = addressGu;
+        this.addressDong = addressDong;
+        this.addressDetail = addressDetail;
+        this.memberCoupon = memberCoupon;
+        this.shoppingBasket = shoppingBasket;
+        this.orders = orders;
+    }
+
+    public boolean memberPointCheck(int orderPoint, int memberPoint){
+        if(orderPoint <= memberPoint){
+            return true;
+        }
+        return false;
+    }
+
+    public void memberPointChange(int orderPoint, Member member){
+        this.point = member.getPoint()-orderPoint;
+        this.usedPoint = member.usedPoint+orderPoint;
+    }
 
 }
