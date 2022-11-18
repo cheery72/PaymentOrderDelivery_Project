@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -28,5 +30,13 @@ public class ProductImage {
         this.id = id;
         this.image = image;
         this.product = product;
+    }
+
+    public static List<ProductImage> productImageBuilder(List<String> images){
+        return images.stream()
+                .map(image -> ProductImage.builder()
+                    .image(image)
+                    .build())
+                    .collect(Collectors.toList());
     }
 }
