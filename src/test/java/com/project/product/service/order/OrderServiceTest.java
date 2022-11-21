@@ -4,19 +4,17 @@ import com.project.product.domain.event.Coupon;
 import com.project.product.domain.member.Member;
 import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
-import com.project.product.domain.order.PayType;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
 import com.project.product.dto.OrderCreate;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
-import com.project.product.repository.coupon.CouponRepository;
+import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
-import com.project.product.service.product.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,17 +22,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc

@@ -3,10 +3,8 @@ package com.project.product.domain.member;
 import com.project.product.domain.order.Order;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.project.product.dto.MemberCreate;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -61,6 +59,7 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
+    @Builder
     public Member(Long id, String email, String password, String name, String image, int point, int usedPoint, int receivePoint, MemberStatus memberStatus, String addressCity, String addressGu, String addressDong, String addressDetail, List<MemberCoupon> memberCoupon, ShoppingBasket shoppingBasket, List<Order> orders) {
         this.id = id;
         this.email = email;
@@ -78,6 +77,20 @@ public class Member {
         this.memberCoupon = memberCoupon;
         this.shoppingBasket = shoppingBasket;
         this.orders = orders;
+    }
+
+    public static Member memberBuilder(MemberCreate memberCreate){
+        return Member.builder()
+                .email(memberCreate.getEmail())
+                .password(memberCreate.getPassword())
+                .name(memberCreate.getName())
+                .image(memberCreate.getImage())
+                .memberStatus(MemberStatus.MAINTENANCE)
+                .addressCity(memberCreate.getAddressCity())
+                .addressGu(memberCreate.getAddressGu())
+                .addressDong(memberCreate.getAddressDong())
+                .addressDetail(memberCreate.getAddressDetail())
+                .build();
     }
 
     public boolean memberPointCheck(int orderPoint, int memberPoint){
