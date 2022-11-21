@@ -2,10 +2,8 @@ package com.project.product.domain.payment;
 
 import com.project.product.domain.BaseTime;
 import com.project.product.domain.member.Member;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.project.product.dto.CardRegister;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -32,12 +30,21 @@ public class Card extends BaseTime {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder
     public Card(Long id, String name, int money, CardStatus cardStatus, Member member) {
         this.id = id;
         this.name = name;
         this.money = money;
         this.cardStatus = cardStatus;
         this.member = member;
+    }
+
+    public static Card cardBuilder(CardRegister cardRegister){
+        return Card.builder()
+                .name(cardRegister.getName())
+                .money(50000)
+                .cardStatus(CardStatus.TRANSACTION_POSSIBILITY)
+                .build();
     }
 
     public void cardPayment(int money, int paymentMoney, int couponDiscount){

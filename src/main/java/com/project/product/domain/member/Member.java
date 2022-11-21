@@ -101,7 +101,7 @@ public class Member {
     }
 
     public void memberPointPayment(int orderPoint, Member member,int discount){
-        this.point = member.getPoint()-(orderPoint - (orderPoint / 10 * discount));
+        this.point = member.getPoint()-(orderPoint - (orderPoint * (discount / 100)));
         this.usedPoint = member.usedPoint+orderPoint;
     }
 
