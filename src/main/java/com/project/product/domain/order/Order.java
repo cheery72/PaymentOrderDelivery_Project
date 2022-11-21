@@ -71,9 +71,9 @@ public class Order {
         this.products = products;
     }
 
-    public static Order orderBuilder(LocalDateTime paymentDate,OrderCreate orderCreate, List<Product> products, Long memberId){
+    public static Order orderBuilder(LocalDateTime paymentDate,OrderCreate orderCreate, List<Product> products){
         return Order.builder()
-                .purchaser(memberId)
+                .purchaser(orderCreate.getPurchaser())
                 .totalPrice(orderCreate.getTotalPrice())
                 .usePoint(orderCreate.getUsePoint())
                 .purchaserMemo(orderCreate.getPurchaserMemo())

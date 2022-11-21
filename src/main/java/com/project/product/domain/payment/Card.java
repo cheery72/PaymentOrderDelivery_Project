@@ -40,13 +40,15 @@ public class Card extends BaseTime {
         this.member = member;
     }
 
-    public boolean CardPayment(int money, int paymentMoney, int couponDiscount){
-        paymentMoney = paymentMoney -(paymentMoney / 10 * couponDiscount);
-        if(paymentMoney <= money){
-            this.money = money-paymentMoney;
+    public void cardPayment(int money, int paymentMoney, int couponDiscount){
+        this.money = money-(paymentMoney+couponDiscount);
+    }
+
+
+    public boolean cardPaymentCheck(int money, int paymentMoney, int couponDiscount){
+        if(paymentMoney -(paymentMoney / 10 * couponDiscount) <= money){
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 }
