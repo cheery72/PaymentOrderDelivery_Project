@@ -6,6 +6,7 @@ import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.PayType;
 import com.project.product.domain.product.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class OrderCreate {
 
     private List<Long> productId;
@@ -34,4 +36,5 @@ public class OrderCreate {
     private Long cardId;
 
     private Long couponId;
+
 }
