@@ -1,9 +1,12 @@
 package com.project.product.domain.member;
 
 import com.project.product.domain.order.Order;
+import com.project.product.domain.payment.Card;
+import com.project.product.domain.payment.CardStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,11 +16,13 @@ import java.util.UUID;
 @Table
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Setter
 public class Member {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String email;
 
@@ -56,7 +61,7 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    public Member(UUID id, String email, String password, String name, String image, int point, int usedPoint, int receivePoint, MemberStatus memberStatus, String addressCity, String addressGu, String addressDong, String addressDetail, List<MemberCoupon> memberCoupon, ShoppingBasket shoppingBasket, List<Order> orders) {
+    public Member(Long id, String email, String password, String name, String image, int point, int usedPoint, int receivePoint, MemberStatus memberStatus, String addressCity, String addressGu, String addressDong, String addressDetail, List<MemberCoupon> memberCoupon, ShoppingBasket shoppingBasket, List<Order> orders) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -82,8 +87,8 @@ public class Member {
         return false;
     }
 
-    public void memberPointChange(int orderPoint, Member member){
-        this.point = member.getPoint()-orderPoint;
+    public void memberPointChange(int orderPoint, Member member,int discount){
+        this.point = member.getPoint()-(orderPoint - (orderPoint / 10 * discount));
         this.usedPoint = member.usedPoint+orderPoint;
     }
 

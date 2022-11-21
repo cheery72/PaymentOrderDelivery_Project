@@ -22,7 +22,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String seller;
+    private Long seller;
 
     private String name;
 
@@ -45,7 +45,7 @@ public class Product {
     private ShoppingBasket shoppingBasket;
 
     @Builder
-    public Product(Long id, String seller, String name, int price, String category, ProductStatus productStatus, List<ProductImage> images, Order order, ShoppingBasket shoppingBasket) {
+    public Product(Long id, Long seller, String name, int price, String category, ProductStatus productStatus, List<ProductImage> images, Order order, ShoppingBasket shoppingBasket) {
         this.id = id;
         this.seller = seller;
         this.name = name;

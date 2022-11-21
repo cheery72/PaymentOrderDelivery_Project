@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class ProductRegisterDto {
 
-    private String seller;
+    private Long seller;
 
     private String name;
 

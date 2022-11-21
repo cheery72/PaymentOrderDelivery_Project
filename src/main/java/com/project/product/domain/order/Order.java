@@ -1,5 +1,6 @@
 package com.project.product.domain.order;
 
+import com.project.product.domain.payment.Card;
 import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
 import com.project.product.dto.OrderCreate;
@@ -21,9 +22,10 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String purchaser;
+    private Long purchaser;
 
     private int totalPrice;
 
@@ -36,8 +38,6 @@ public class Order {
     private LocalDateTime paymentDateTime;
 
     private LocalDateTime approveDateTime;
-
-    private String bankInfo;
 
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus;
@@ -56,7 +56,7 @@ public class Order {
     private Member member;
 
     @Builder
-    public Order(UUID id, String purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, String bankInfo, OrderStatus orderStatus, List<Product> products) {
+    public Order(Long id, Long purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType,  OrderStatus orderStatus, List<Product> products) {
         this.id = id;
         this.purchaser = purchaser;
         this.totalPrice = totalPrice;
@@ -67,8 +67,23 @@ public class Order {
         this.approveDateTime = approveDateTime;
         this.approveStatus = approveStatus;
         this.payType = payType;
-        this.bankInfo = bankInfo;
         this.orderStatus = orderStatus;
         this.products = products;
+    }
+
+    public static Order orderBuilder(LocalDateTime paymentDate,OrderCreate orderCreate, List<Product> products, Long memberId){
+        return Order.builder()
+                .purchaser(memberId)
+                .totalPrice(orderCreate.getTotalPrice())
+                .usePoint(orderCreate.getUsePoint())
+                .purchaserMemo(orderCreate.getPurchaserMemo())
+                .adminMemo("결제완료")
+                .paymentDateTime(paymentDate)
+                .approveDateTime(LocalDateTime.now())
+                .approveStatus(ApproveStatus.SUCCESS)
+                .payType(PayType.valueOf(orderCreate.getPayType()))
+                .orderStatus(OrderStatus.SHIPPING_PREPARATION)
+                .products(products)
+                .build();
     }
 }
