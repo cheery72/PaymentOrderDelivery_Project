@@ -1,10 +1,8 @@
 package com.project.product.service.order;
 
 import com.project.product.domain.event.Coupon;
-import com.project.product.domain.event.CouponStatus;
 import com.project.product.domain.member.Member;
 import com.project.product.domain.order.Order;
-import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.PayType;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
@@ -12,7 +10,7 @@ import com.project.product.domain.product.Product;
 import com.project.product.dto.OrderCreate;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
-import com.project.product.repository.coupon.CouponRepository;
+import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;

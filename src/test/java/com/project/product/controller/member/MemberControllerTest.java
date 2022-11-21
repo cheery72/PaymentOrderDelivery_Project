@@ -1,37 +1,29 @@
-package com.project.product.controller.order;
+package com.project.product.controller.member;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.product.domain.order.PayType;
-import com.project.product.dto.OrderCreate;
+import com.project.product.dto.MemberCreate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class OrderControllerTest {
+class MemberControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,7 +34,7 @@ class OrderControllerTest {
     @Autowired
     private WebApplicationContext ctx;
 
-    private final String BASE_URL = "/order";
+    private final String BASE_URL = "/member";
 
     @BeforeEach()
     public void setup() {
@@ -53,22 +45,15 @@ class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("주문 생성")
+    @DisplayName("멤버 회원가입")
     public void orderCreateTest() throws Exception {
         String body = objectMapper.writeValueAsString(
-                OrderCreate.builder()
-                        .productId(List.of(1L,2L))
-                        .purchaser(1L)
-                        .totalPrice(15000)
-                        .usePoint(12000)
-                        .purchaserMemo("안녕")
-                        .payType(PayType.ALL.name())
-                        .cardId(1L)
-                        .couponId(1L)
-                        .build()
+               new MemberCreate("asdf@naver.com", "1234", "김경민"
+                    , "이미지1", "광주광역시", "북구", "각화동", "아파트명 동 호")
+
         );
 
-        mockMvc.perform(post(BASE_URL + "/create")
+        mockMvc.perform(post(BASE_URL + "/join")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());

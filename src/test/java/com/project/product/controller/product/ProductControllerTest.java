@@ -1,10 +1,7 @@
 package com.project.product.controller.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.product.domain.order.PayType;
-import com.project.product.dto.OrderCreate;
 import com.project.product.dto.ProductRegisterDto;
-import com.project.product.repository.order.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
