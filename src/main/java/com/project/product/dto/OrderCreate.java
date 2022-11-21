@@ -19,9 +19,9 @@ import java.util.List;
 @Getter
 public class OrderCreate {
 
-    private Long productId;
+    private List<Long> productId;
 
-    private String purchaser;
+    private Long purchaser;
 
     private int totalPrice;
 
@@ -31,6 +31,7 @@ public class OrderCreate {
 
     private String payType;
 
-    private String bankInfo;
+    private Long cardId;
 
+    private Long couponId;
 }

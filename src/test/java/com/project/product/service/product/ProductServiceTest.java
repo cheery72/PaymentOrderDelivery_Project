@@ -38,7 +38,7 @@ class ProductServiceTest {
     @Test
     @DisplayName("물품 등록")
     public void registerProductTest(){
-        ProductRegisterDto productRegisterDto = new ProductRegisterDto("유저1","이름",15000,
+        ProductRegisterDto productRegisterDto = new ProductRegisterDto(1L,"이름",15000,
                                                                 "전자기기",List.of("이미지1","이미지2"));
         Product saveProduct = Product.productBuilder(productRegisterDto);
 
@@ -47,7 +47,7 @@ class ProductServiceTest {
 
         Product newProduct = productService.registerProduct(productRegisterDto);
 
-        assertEquals("유저1",newProduct.getSeller());
+        assertEquals(1L,newProduct.getSeller());
         assertEquals("이름",newProduct.getName());
         assertEquals(15000,newProduct.getPrice());
         assertEquals("이미지1",newProduct.getImages().get(0).getImage());

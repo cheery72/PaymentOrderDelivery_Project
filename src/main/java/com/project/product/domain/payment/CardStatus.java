@@ -1,4 +1,4 @@
-package com.project.product.domain.member;
+package com.project.product.domain.payment;
 
 public enum CardStatus {
     TRANSACTION_STOP,TRANSACTION_POSSIBILITY
