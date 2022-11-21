@@ -87,7 +87,7 @@ public class Member {
         return false;
     }
 
-    public void memberPointChange(int orderPoint, Member member,int discount){
+    public void memberPointPayment(int orderPoint, Member member,int discount){
         this.point = member.getPoint()-(orderPoint - (orderPoint / 10 * discount));
         this.usedPoint = member.usedPoint+orderPoint;
     }

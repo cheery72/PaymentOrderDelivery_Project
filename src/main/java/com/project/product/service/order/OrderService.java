@@ -10,6 +10,8 @@ import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
 import com.project.product.dto.OrderCreate;
+import com.project.product.exception.NotPaymentCardException;
+import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.coupon.CouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
@@ -21,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,58 +36,53 @@ public class OrderService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public Order createOrder(OrderCreate orderCreate){
+    public Order createOrder(OrderCreate orderCreate) throws RuntimeException {
         List<Product> products = productRepository.findAllById(orderCreate.getProductId());
-        Member member = memberRepository.findById(orderCreate.getPurchaser())
-                .orElseThrow(NoSuchElementException::new);
         Coupon coupon = couponRepository.findById(orderCreate.getCouponId())
                 .orElseThrow(NoSuchElementException::new);
-
         Card card = cardRepository.findById(orderCreate.getCardId())
                 .orElseThrow(NoSuchElementException::new);
 
-        //Todo: 쿠폰 확인
         int discount = coupon.couponExpiryCheck(coupon);
-        //Todo: 결제 수단 확인
-        if(PayType.CARD.name().equals(orderCreate.getPayType())){
-            //Todo: 결제 가능 여부
-            if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())){
-                //Todo: 결제 금액 확인
-                if(card.CardPayment(card.getMoney(),orderCreate.getTotalPrice(),discount)){
-                    // 결제 성공
-                    Order order = Order.orderBuilder(card.getCreateAt(), orderCreate, products, member.getId());
-                    orderRepository.save(order);
 
-                    return order;
-                }
-            }
-        }else if(PayType.POINT.name().equals(orderCreate.getPayType())){
-            //Todo: 포인트 확인
-            if(member.memberPointCheck(orderCreate.getUsePoint(),member.getPoint())){
-                member.memberPointChange(orderCreate.getUsePoint(),member,discount);
-                // 결제 성공
-                Order order = Order.orderBuilder(card.getCreateAt(), orderCreate, products, member.getId());
-                orderRepository.save(order);
-
-                return order;
-            }
-        }else if(PayType.ALL.name().equals(orderCreate.getPayType())){
-            //Todo: 포인트 확인
-            if(member.memberPointCheck(orderCreate.getUsePoint(),member.getPoint())
-            //Todo: 결제 수단 확인
-            && (CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus()))){
-                member.memberPointChange(orderCreate.getUsePoint(),member,discount);
-                if(card.CardPayment(card.getMoney(), orderCreate.getTotalPrice()-orderCreate.getUsePoint(),coupon.getDiscount())){
-                    // 결제 성공
-                    Order order = Order.orderBuilder(card.getCreateAt(), orderCreate, products, member.getId());
-                    orderRepository.save(order);
-
-                    return order;
-                }
-            }
+        if (PayType.CARD.name().equals(orderCreate.getPayType())) {
+            paymentCardOrder(card, orderCreate.getTotalPrice(), discount);
+        }else if (PayType.ALL.name().equals(orderCreate.getPayType())) {
+            paymentPointOrder(orderCreate.getPurchaser(), orderCreate.getUsePoint(),discount);
+            paymentCardOrder(card, orderCreate.getTotalPrice() - orderCreate.getUsePoint(), discount);
+        }else if (PayType.POINT.name().equals(orderCreate.getPayType())) {
+            paymentPointOrder(orderCreate.getPurchaser(),orderCreate.getUsePoint(),discount);
         }
 
-    return null;
+        // 결제 성공
+        Order order = Order.orderBuilder(card.getCreateAt(), orderCreate, products);
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Transactional
+    public void paymentCardOrder(Card card, int totalPrice, int discount) throws NotPaymentCardException {
+        //Todo: 결제 가능 여부, 결제 금액 확인
+        if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
+            && card.cardPaymentCheck(card.getMoney(),totalPrice,discount)){
+            //Todo: 결제 진행
+            card.cardPayment(card.getMoney(),totalPrice,discount);
+            return;
+        }
+        throw new NotPaymentCardException("카드 금액이 부족합니다.");
+    }
+
+    @Transactional
+    public void paymentPointOrder(Long purchaser,int usePoint,int discount) throws NotPaymentPointException {
+        Member member = memberRepository.findById(purchaser)
+                .orElseThrow(NoSuchElementException::new);
+        //Todo: 포인트 확인
+        if(member.memberPointCheck(usePoint,member.getPoint())){
+            member.memberPointPayment(usePoint,member,discount);
+            return;
+        }
+        throw new NotPaymentPointException("포인트가 부족합니다.");
     }
 }
 
