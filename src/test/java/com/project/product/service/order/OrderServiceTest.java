@@ -15,6 +15,7 @@ import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -157,13 +158,8 @@ class OrderServiceTest {
         Card card =new Card();
         card.setCardStatus(CardStatus.TRANSACTION_STOP);
 
-        try {
-            Order newOrder = commonCardOrderProduct(orderCreate, card);
-        }catch(NoSuchElementException e){
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Assertions.assertThrows(NoSuchElementException.class,
+                () ->  commonCardOrderProduct(orderCreate, card)).printStackTrace();
     }
 
     @Test
@@ -174,11 +170,9 @@ class OrderServiceTest {
 
         Member member = new Member();
         member.setPoint(14999);
-        try {
-            Order newOrder = commonCardPointOrderProduct(orderCreate, card, member);
-        }catch (NotPaymentPointException e){
-            e.printStackTrace();
-        }
+
+        Assertions.assertThrows(NotPaymentPointException.class,
+                () ->  commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
     }
 
     @Test
@@ -186,14 +180,13 @@ class OrderServiceTest {
     public void orderCardMoneyFail() throws Exception {
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(14999);
-        try{
-            Order newOrder = commonCardOrderProduct(orderCreate, card);
-        }catch (NotPaymentCardException e){
-            e.printStackTrace();
-        }
+
+
+        Assertions.assertThrows(NotPaymentCardException.class,
+                () ->  commonCardOrderProduct(orderCreate, card)).printStackTrace();
     }
 
     @Test
@@ -201,16 +194,14 @@ class OrderServiceTest {
     public void orderMoneyNoPointFail() throws Exception {
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(18000);
         Member member = new Member();
         member.setPoint(6000);
-        try{
-            Order newOrder = commonCardPointOrderProduct(orderCreate, card, member);
-        }catch (NotPaymentPointException e){
-            e.printStackTrace();
-        }
+
+        Assertions.assertThrows(NotPaymentPointException.class,
+                () ->  commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
     }
 
     @Test
@@ -218,16 +209,14 @@ class OrderServiceTest {
     public void orderNoMoneyPointFail() throws Exception {
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(6999);
         Member member = new Member();
         member.setPoint(8000);
 
-        try {
-            Order newOrder = commonCardPointOrderProduct(orderCreate, card, member);
-        }catch (NotPaymentCardException e){
-            e.printStackTrace();
-        }
+
+        Assertions.assertThrows(NotPaymentCardException.class,()
+                -> commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
     }
 }
