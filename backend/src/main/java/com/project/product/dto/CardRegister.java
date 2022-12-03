@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Builder
 public class CardRegister {
 
+    private Long memberId;
+
     private String name;
 
 }

@@ -22,4 +22,9 @@ public class ServiceExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(NotFindMemberException.class)
+    protected ResponseEntity NotFindMemberException(NotFindMemberException e){
+        final ErrorResponse errorResponse = ErrorResponse.builder().code("Not find Member").message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }
