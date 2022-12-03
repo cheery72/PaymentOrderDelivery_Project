@@ -82,5 +82,7 @@ public class OrderService {
         }
         throw new NotPaymentPointException("포인트가 부족합니다.");
     }
+
+    //Todo: 배송 중으로 변경하기 위해서는 택배사랑 연결이 되어야되는 로직 구성
 }
 

@@ -41,6 +41,7 @@ public class Card extends BaseTime {
 
     public static Card cardBuilder(CardRegister cardRegister){
         return Card.builder()
+                .id(cardRegister.getMemberId())
                 .name(cardRegister.getName())
                 .money(50000)
                 .cardStatus(CardStatus.TRANSACTION_POSSIBILITY)
