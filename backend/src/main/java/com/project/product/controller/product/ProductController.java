@@ -1,6 +1,6 @@
 package com.project.product.controller.product;
 
-import com.project.product.dto.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterDto;
 import com.project.product.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

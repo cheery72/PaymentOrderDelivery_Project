@@ -2,11 +2,10 @@ package com.project.product.domain.payment;
 
 import com.project.product.domain.BaseTime;
 import com.project.product.domain.member.Member;
-import com.project.product.dto.CardRegister;
+import com.project.product.dto.payment.CardRegister;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table

@@ -1,4 +1,4 @@
-package com.project.product.dto;
+package com.project.product.dto.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

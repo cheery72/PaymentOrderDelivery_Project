@@ -1,4 +1,4 @@
-package com.project.product.dto;
+package com.project.product.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

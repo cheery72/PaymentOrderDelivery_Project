@@ -1,7 +1,6 @@
 package com.project.product.controller.order;
 
-import com.project.product.domain.order.Order;
-import com.project.product.dto.OrderCreate;
+import com.project.product.dto.order.OrderCreate;
 import com.project.product.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

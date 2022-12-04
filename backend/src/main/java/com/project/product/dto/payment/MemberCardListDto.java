@@ -1,7 +1,6 @@
-package com.project.product.dto;
+package com.project.product.dto.payment;
 
 import com.project.product.domain.payment.Card;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

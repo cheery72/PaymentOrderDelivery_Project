@@ -1,4 +1,4 @@
-package com.project.product.dto;
+package com.project.product.dto.order;
 
 import com.project.product.domain.member.Member;
 import com.project.product.domain.order.ApproveStatus;
