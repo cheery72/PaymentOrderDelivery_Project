@@ -8,6 +8,7 @@ import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
 import com.project.product.dto.order.OrderCreate;
+import com.project.product.dto.product.OrderProductListDto;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
@@ -21,11 +22,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -104,7 +111,7 @@ class OrderServiceTest {
     public void orderCardProduct() throws Exception {
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(30000);
 
@@ -135,7 +142,7 @@ class OrderServiceTest {
     public void orderPointCardProduct() throws Exception {
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(30000);
 
@@ -155,7 +162,7 @@ class OrderServiceTest {
     public void orderCardProductFail(){
         OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
-        Card card =new Card();
+        Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_STOP);
 
         Assertions.assertThrows(NoSuchElementException.class,
@@ -218,5 +225,32 @@ class OrderServiceTest {
 
         Assertions.assertThrows(NotPaymentCardException.class,()
                 -> commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
+    }
+
+    @Test
+    @DisplayName("멤버 주문 물품 리스트 조회")
+    public void findMemberOrderProductList(){
+        Long memberId = 1L;
+        Pageable pageable = PageRequest.of(0,2);
+        List<OrderProductListDto> orderProductListDto = new ArrayList<>();
+        OrderProductListDto orderProductListDto1 =
+                new OrderProductListDto(1L,"노트북",15000,"전자기기"
+                        ,String.valueOf(OrderStatus.COMPLETED),"2022-11-22 02:51:54.881462");
+        OrderProductListDto orderProductListDto2 = new OrderProductListDto(2L,"노트북",15000,"전자기기"
+                ,String.valueOf(OrderStatus.COMPLETED),"2022-11-22 02:51:54.881462");
+        orderProductListDto.add(orderProductListDto1);
+        orderProductListDto.add(orderProductListDto2);
+        Page<OrderProductListDto> page = new PageImpl<>(orderProductListDto,pageable, pageable.getOffset());
+
+        when(memberRepository.findById(memberId))
+                .thenReturn(Optional.of(member));
+
+        when(orderRepository.findAllByMemberOrderList(memberId,pageable))
+                .thenReturn(page);
+
+        Page<OrderProductListDto> memberOrderList = orderService.findMemberOrderList(memberId, pageable);
+
+        assertEquals(memberOrderList.getTotalElements(),2);
+        assertEquals(memberOrderList.getTotalPages(),1);
     }
 }

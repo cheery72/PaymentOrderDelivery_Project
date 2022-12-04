@@ -21,10 +21,10 @@ import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -93,6 +93,12 @@ public class OrderService {
     //Todo: 배송 중으로 변경하기 위해서는 택배사랑 연결이 되어야되는 로직 구성
 
     //Todo: 주문한 물품 전체 조회
+    public Page<OrderProductListDto> findMemberOrderList(Long memberId, Pageable pageable){
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFindMemberException("요청한 멤버를 찾을 수 없습니다."));
+
+        return orderRepository.findAllByMemberOrderList(memberId, pageable);
+    }
 
 
 }

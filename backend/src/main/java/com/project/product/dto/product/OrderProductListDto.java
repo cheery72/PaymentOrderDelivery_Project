@@ -4,9 +4,11 @@ package com.project.product.dto.product;
 import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.product.Product;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -42,6 +44,7 @@ public class OrderProductListDto {
                 .collect(Collectors.toList());
     }
 
+    @QueryProjection
     @Builder
     public OrderProductListDto(Long id, String name, int price, String category, String orderStatus, String paymentDateTime) {
         this.id = id;
