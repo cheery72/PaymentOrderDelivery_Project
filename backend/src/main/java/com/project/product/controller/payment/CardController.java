@@ -1,7 +1,6 @@
 package com.project.product.controller.payment;
 
-import com.project.product.dto.CardRegister;
-import com.project.product.repository.payment.CardRepository;
+import com.project.product.dto.payment.CardRegister;
 import com.project.product.service.payment.CardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

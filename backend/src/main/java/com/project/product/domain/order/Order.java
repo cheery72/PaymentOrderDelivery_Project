@@ -1,9 +1,8 @@
 package com.project.product.domain.order;
 
-import com.project.product.domain.payment.Card;
 import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
-import com.project.product.dto.OrderCreate;
+import com.project.product.dto.order.OrderCreate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders")

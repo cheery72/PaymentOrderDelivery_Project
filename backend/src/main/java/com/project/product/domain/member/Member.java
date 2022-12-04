@@ -2,14 +2,12 @@ package com.project.product.domain.member;
 
 import com.project.product.domain.order.Order;
 import com.project.product.domain.payment.Card;
-import com.project.product.domain.payment.CardStatus;
-import com.project.product.dto.MemberCreate;
+import com.project.product.dto.member.MemberCreate;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Table
 @Entity

@@ -1,6 +1,6 @@
 package com.project.product.controller.member;
 
-import com.project.product.dto.MemberCreate;
+import com.project.product.dto.member.MemberCreate;
 import com.project.product.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

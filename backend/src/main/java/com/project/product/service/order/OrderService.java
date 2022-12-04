@@ -3,11 +3,15 @@ package com.project.product.service.order;
 import com.project.product.domain.event.Coupon;
 import com.project.product.domain.member.Member;
 import com.project.product.domain.order.Order;
+import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.PayType;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
-import com.project.product.dto.OrderCreate;
+import com.project.product.dto.order.MemberOrderListDto;
+import com.project.product.dto.order.OrderCreate;
+import com.project.product.dto.product.OrderProductListDto;
+import com.project.product.exception.NotFindMemberException;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
@@ -16,9 +20,12 @@ import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -74,7 +81,7 @@ public class OrderService {
     @Transactional
     public void paymentPointOrder(Long purchaser,int usePoint,int discount) throws NotPaymentPointException {
         Member member = memberRepository.findById(purchaser)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NotFindMemberException("요청한 멤버를 찾을 수 없습니다."));
         //Todo: 포인트 확인
         if(member.memberPointCheck(usePoint,member.getPoint())){
             member.memberPointPayment(usePoint,member,discount);
@@ -84,5 +91,9 @@ public class OrderService {
     }
 
     //Todo: 배송 중으로 변경하기 위해서는 택배사랑 연결이 되어야되는 로직 구성
+
+    //Todo: 주문한 물품 전체 조회
+
+
 }
 

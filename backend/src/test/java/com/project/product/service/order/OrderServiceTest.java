@@ -7,7 +7,7 @@ import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
-import com.project.product.dto.OrderCreate;
+import com.project.product.dto.order.OrderCreate;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;

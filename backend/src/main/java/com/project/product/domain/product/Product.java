@@ -2,7 +2,7 @@ package com.project.product.domain.product;
 
 import com.project.product.domain.member.ShoppingBasket;
 import com.project.product.domain.order.Order;
-import com.project.product.dto.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

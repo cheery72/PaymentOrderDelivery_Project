@@ -1,11 +1,8 @@
 package com.project.product.service.payment;
 
-import com.project.product.domain.member.Member;
 import com.project.product.domain.payment.Card;
-import com.project.product.dto.CardRegister;
-import com.project.product.dto.MemberCardListDto;
-import com.project.product.exception.NotFindMemberException;
-import com.project.product.repository.member.MemberRepository;
+import com.project.product.dto.payment.CardRegister;
+import com.project.product.dto.payment.MemberCardListDto;
 import com.project.product.repository.payment.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

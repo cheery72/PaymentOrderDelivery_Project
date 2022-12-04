@@ -1,7 +1,7 @@
 package com.project.product.service.member;
 
 import com.project.product.domain.member.Member;
-import com.project.product.dto.MemberCreate;
+import com.project.product.dto.member.MemberCreate;
 import com.project.product.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

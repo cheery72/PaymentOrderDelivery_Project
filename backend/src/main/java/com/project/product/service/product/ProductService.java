@@ -1,7 +1,7 @@
 package com.project.product.service.product;
 
 import com.project.product.domain.product.Product;
-import com.project.product.dto.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterDto;
 import com.project.product.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
