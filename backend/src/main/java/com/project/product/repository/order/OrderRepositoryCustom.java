@@ -1,10 +1,9 @@
 package com.project.product.repository.order;
 
-import com.project.product.dto.order.MemberOrderListDto;
-
-import java.awt.print.Pageable;
-import java.util.List;
+import com.project.product.dto.product.OrderProductListDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderRepositoryCustom {
-    List<MemberOrderListDto> findAllByMemberOrderList(Long memberId, Pageable pageable);
+    Page<OrderProductListDto> findAllByMemberOrderList(Long memberId, Pageable pageable);
 }
