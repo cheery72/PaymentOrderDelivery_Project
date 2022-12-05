@@ -77,6 +77,10 @@ public class Member {
         this.orders = orders;
     }
 
+    public void joinCoupon(MemberCoupon memberCoupon) {
+        this.memberCoupon = List.of(memberCoupon);
+    }
+
     public static Member memberBuilder(MemberCreate memberCreate){
         return Member.builder()
                 .email(memberCreate.getEmail())

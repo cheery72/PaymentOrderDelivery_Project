@@ -1,5 +1,6 @@
 package com.project.product.controller.member;
 
+import com.project.product.domain.member.Member;
 import com.project.product.dto.member.MemberCreate;
 import com.project.product.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public ResponseEntity<Object> memberJoin(@RequestBody MemberCreate memberCreate){
+    public ResponseEntity<Object> memberJoin(@RequestBody MemberCreate memberCreate) throws InterruptedException {
         log.info("member create start ------");
 
-        memberService.joinMember(memberCreate);
+        Member newMember = memberService.joinMember(memberCreate);
+        memberService.joinProvideCoupon(newMember);
 
         return ResponseEntity
                 .noContent()
