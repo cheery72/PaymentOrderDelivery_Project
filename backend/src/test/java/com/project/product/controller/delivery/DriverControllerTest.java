@@ -1,29 +1,28 @@
-package com.project.product.controller.product;
+package com.project.product.controller.delivery;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.product.dto.product.ProductRegisterRequest;
+import com.project.product.domain.delivery.Driver;
+import com.project.product.dto.delivery.DriverRegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.util.List;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class ProductControllerTest {
+public class DriverControllerTest {
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -33,7 +32,7 @@ class ProductControllerTest {
     @Autowired
     private WebApplicationContext ctx;
 
-    private final String BASE_URL = "/product";
+    private final String BASE_URL = "/driver";
 
     @BeforeEach()
     public void setup() {
@@ -44,21 +43,20 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("물품 생성")
-    public void productCreateTest() throws Exception {
+    public void driverRegister() throws Exception{
         String body = objectMapper.writeValueAsString(
-                ProductRegisterRequest.builder()
-                        .seller(1L)
-                        .name("노트북")
-                        .price(15000)
-                        .category("전자기기")
-                        .images(List.of("이미지1","이미지2"))
+                DriverRegisterRequest.builder()
+                        .name("김경민")
+                        .phone("010-0000-0000")
                         .build()
         );
 
-        mockMvc.perform(post(BASE_URL + "/create")
+        mockMvc.perform(post(BASE_URL+"/register")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
     }
+
+
 }

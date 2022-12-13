@@ -2,7 +2,7 @@ package com.project.product.service.member;
 
 import com.project.product.domain.member.Member;
 import com.project.product.domain.member.MemberCoupon;
-import com.project.product.dto.member.MemberCreate;
+import com.project.product.dto.member.MemberCreateRequest;
 import com.project.product.repository.member.MemberCouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -39,9 +39,9 @@ class MemberServiceTest {
     @Test
     @DisplayName("멤버 회원가입")
     public void createMember() throws InterruptedException {
-        MemberCreate memberCreate = new MemberCreate("asdf@naver.com", "1234", "김경민"
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest("asdf@naver.com", "1234", "김경민"
                 , "이미지1", "광주광역시", "북구", "각화동", "아파트명 동 호");
-        Member member = Member.memberBuilder(memberCreate);
+        Member member = Member.memberBuilder(memberCreateRequest);
         MemberCoupon coupon = MemberCoupon.builder()
                 .name("신규가입 쿠폰")
                 .discount(10)
@@ -54,7 +54,7 @@ class MemberServiceTest {
         when(memberCouponRepository.save(any()))
                 .thenReturn(coupon);
 
-        Member newMember = memberService.joinMember(memberCreate);
+        Member newMember = memberService.joinMember(memberCreateRequest);
         memberService.joinProvideCoupon(newMember);
 
         System.out.println("끝?");

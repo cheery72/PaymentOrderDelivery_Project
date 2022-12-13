@@ -3,8 +3,8 @@ package com.project.product.service.payment;
 import com.project.product.domain.member.Member;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
-import com.project.product.dto.payment.CardRegister;
-import com.project.product.dto.payment.MemberCardListDto;
+import com.project.product.dto.payment.CardRegisterRequest;
+import com.project.product.dto.payment.MemberCardListResponse;
 import com.project.product.repository.payment.CardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,14 +38,14 @@ class CardServiceTest {
     @Test
     @DisplayName("카드 등록")
     public void registerCard(){
-        CardRegister cardRegister = new CardRegister(1L,"은행");
+        CardRegisterRequest cardRegisterRequest = new CardRegisterRequest(1L,"은행");
 
-        Card card = Card.cardBuilder(cardRegister);
+        Card card = Card.cardBuilder(cardRegisterRequest);
 
         when(cardRepository.save(any()))
                 .thenReturn(card);
 
-        Card newCard = cardService.registerCard(cardRegister);
+        Card newCard = cardService.registerCard(cardRegisterRequest);
 
         assertEquals(card.getCardStatus(), CardStatus.TRANSACTION_POSSIBILITY);
         assertEquals(card.getMoney(),50000);
@@ -70,7 +70,7 @@ class CardServiceTest {
         when(cardRepository.findAllByMemberId(memberId))
                 .thenReturn(cards);
 
-        List<MemberCardListDto> newMemberCardList = cardService.findMemberCardList(memberId);
+        List<MemberCardListResponse> newMemberCardList = cardService.findMemberCardList(memberId);
 
         assertEquals(newMemberCardList.get(0).getStatus(),String.valueOf(CardStatus.TRANSACTION_POSSIBILITY));
         assertEquals(newMemberCardList.get(1).getStatus(),String.valueOf(CardStatus.TRANSACTION_STOP));

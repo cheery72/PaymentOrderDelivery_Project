@@ -2,7 +2,7 @@ package com.project.product.domain.order;
 
 import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
-import com.project.product.dto.order.OrderCreate;
+import com.project.product.dto.order.OrderCreateRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,17 +69,17 @@ public class Order {
         this.products = products;
     }
 
-    public static Order orderBuilder(LocalDateTime paymentDate,OrderCreate orderCreate, List<Product> products){
+    public static Order orderBuilder(LocalDateTime paymentDate, OrderCreateRequest orderCreateRequest, List<Product> products){
         return Order.builder()
-                .purchaser(orderCreate.getPurchaser())
-                .totalPrice(orderCreate.getTotalPrice())
-                .usePoint(orderCreate.getUsePoint())
-                .purchaserMemo(orderCreate.getPurchaserMemo())
+                .purchaser(orderCreateRequest.getPurchaser())
+                .totalPrice(orderCreateRequest.getTotalPrice())
+                .usePoint(orderCreateRequest.getUsePoint())
+                .purchaserMemo(orderCreateRequest.getPurchaserMemo())
                 .adminMemo("결제완료")
                 .paymentDateTime(paymentDate)
                 .approveDateTime(LocalDateTime.now())
                 .approveStatus(ApproveStatus.SUCCESS)
-                .payType(PayType.valueOf(orderCreate.getPayType()))
+                .payType(PayType.valueOf(orderCreateRequest.getPayType()))
                 .orderStatus(OrderStatus.SHIPPING_PREPARATION)
                 .products(products)
                 .build();

@@ -2,13 +2,11 @@ package com.project.product.dto.product;
 
 
 import com.project.product.domain.order.Order;
-import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.product.Product;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
-public class OrderProductListDto {
+public class OrderProductListResponse {
     private Long id;
 
     private String name;
@@ -30,10 +28,10 @@ public class OrderProductListDto {
 
     private String paymentDateTime;
 
-    public static List<OrderProductListDto> OrderProductListDtoBuilder(List<Product> products, Order order){
+    public static List<OrderProductListResponse> OrderProductListDtoBuilder(List<Product> products, Order order){
         return products.stream()
                 .map(product -> (
-                    OrderProductListDto.builder()
+                    OrderProductListResponse.builder()
                         .id(product.getId())
                         .name(product.getName())
                         .orderStatus(String.valueOf(order.getOrderStatus()))
@@ -46,7 +44,7 @@ public class OrderProductListDto {
 
     @QueryProjection
     @Builder
-    public OrderProductListDto(Long id, String name, int price, String category, String orderStatus, String paymentDateTime) {
+    public OrderProductListResponse(Long id, String name, int price, String category, String orderStatus, String paymentDateTime) {
         this.id = id;
         this.name = name;
         this.price = price;

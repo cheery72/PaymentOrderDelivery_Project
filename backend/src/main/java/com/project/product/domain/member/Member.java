@@ -2,7 +2,7 @@ package com.project.product.domain.member;
 
 import com.project.product.domain.order.Order;
 import com.project.product.domain.payment.Card;
-import com.project.product.dto.member.MemberCreate;
+import com.project.product.dto.member.MemberCreateRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -81,17 +81,17 @@ public class Member {
         this.memberCoupon = List.of(memberCoupon);
     }
 
-    public static Member memberBuilder(MemberCreate memberCreate){
+    public static Member memberBuilder(MemberCreateRequest memberCreateRequest){
         return Member.builder()
-                .email(memberCreate.getEmail())
-                .password(memberCreate.getPassword())
-                .name(memberCreate.getName())
-                .image(memberCreate.getImage())
+                .email(memberCreateRequest.getEmail())
+                .password(memberCreateRequest.getPassword())
+                .name(memberCreateRequest.getName())
+                .image(memberCreateRequest.getImage())
                 .memberStatus(MemberStatus.MAINTENANCE)
-                .addressCity(memberCreate.getAddressCity())
-                .addressGu(memberCreate.getAddressGu())
-                .addressDong(memberCreate.getAddressDong())
-                .addressDetail(memberCreate.getAddressDetail())
+                .addressCity(memberCreateRequest.getAddressCity())
+                .addressGu(memberCreateRequest.getAddressGu())
+                .addressDong(memberCreateRequest.getAddressDong())
+                .addressDetail(memberCreateRequest.getAddressDetail())
                 .build();
     }
 

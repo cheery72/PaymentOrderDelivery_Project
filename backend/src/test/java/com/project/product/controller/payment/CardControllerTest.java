@@ -1,7 +1,7 @@
 package com.project.product.controller.payment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.product.dto.payment.CardRegister;
+import com.project.product.dto.payment.CardRegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class CardControllerTest {
     @DisplayName("카드 등록")
     public void cardRegister() throws Exception {
         String body = objectMapper.writeValueAsString(
-                CardRegister.builder()
+                CardRegisterRequest.builder()
                         .name("은행")
                         .build()
         );

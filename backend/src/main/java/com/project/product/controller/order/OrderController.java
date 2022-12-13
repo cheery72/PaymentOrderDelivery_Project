@@ -1,6 +1,6 @@
 package com.project.product.controller.order;
 
-import com.project.product.dto.order.OrderCreate;
+import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,12 @@ public class OrderController {
 
 
     @PostMapping("/create-order")
-    public ResponseEntity<Object> orderCreate(@RequestBody OrderCreate orderCreate){
+    public ResponseEntity<Object> orderCreate(@RequestBody OrderCreateRequest orderCreateRequest){
         log.info("order create start -----");
 
         long startTime = System.currentTimeMillis();
 
-        orderService.createOrder(orderCreate);
+        orderService.createOrder(orderCreateRequest);
 
         log.info("order create end -----");
         long endTime = System.currentTimeMillis();

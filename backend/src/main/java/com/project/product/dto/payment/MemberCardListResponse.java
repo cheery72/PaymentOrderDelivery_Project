@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
-public class MemberCardListDto {
+public class MemberCardListResponse {
 
     private Long id;
 
@@ -19,9 +19,9 @@ public class MemberCardListDto {
     private String name;
 
 
-    public static List<MemberCardListDto> MemberCardListDtoBuilder(List<Card> cards){
+    public static List<MemberCardListResponse> MemberCardListDtoBuilder(List<Card> cards){
         return cards.stream()
-                .map(card -> MemberCardListDto.builder()
+                .map(card -> MemberCardListResponse.builder()
                         .id(card.getId())
                         .status(String.valueOf(card.getCardStatus()))
                         .name(card.getName())
@@ -30,7 +30,7 @@ public class MemberCardListDto {
     }
 
     @Builder
-    public MemberCardListDto(Long id, String status, String name) {
+    public MemberCardListResponse(Long id, String status, String name) {
         this.id = id;
         this.status = status;
         this.name = name;
