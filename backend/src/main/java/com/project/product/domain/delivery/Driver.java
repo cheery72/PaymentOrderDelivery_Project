@@ -17,7 +17,6 @@ import java.util.List;
 public class Driver extends BaseTime {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -28,15 +27,24 @@ public class Driver extends BaseTime {
     @Enumerated(EnumType.STRING)
     private DriverStatus driverStatus;
 
+    private String addressCity;
+
+    private String addressGu;
+
+    private String addressDong;
+
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Delivery> deliveryList = new ArrayList<>();
 
     @Builder
-    public Driver(Long id, String name, String phone, DriverStatus driverStatus, List<Delivery> deliveryList) {
+    public Driver(Long id, String name, String phone, DriverStatus driverStatus, String addressCity, String addressGu, String addressDong, List<Delivery> deliveryList) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.driverStatus = driverStatus;
+        this.addressCity = addressCity;
+        this.addressGu = addressGu;
+        this.addressDong = addressDong;
         this.deliveryList = deliveryList;
     }
 
@@ -45,6 +53,9 @@ public class Driver extends BaseTime {
                 .name(driverRegisterRequest.getName())
                 .phone(driverRegisterRequest.getPhone())
                 .driverStatus(DriverStatus.WAITING)
+                .addressCity(driverRegisterRequest.getAddressCity())
+                .addressGu(driverRegisterRequest.getAddressGu())
+                .addressDong(driverRegisterRequest.getAddressDong())
                 .build();
     }
 }

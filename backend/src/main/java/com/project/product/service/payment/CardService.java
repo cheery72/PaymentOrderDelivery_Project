@@ -26,6 +26,6 @@ public class CardService{
     public List<MemberCardListResponse> findMemberCardList(Long memberId){
         List<Card> cards = cardRepository.findAllByMemberId(memberId);
 
-        return MemberCardListResponse.MemberCardListDtoBuilder(cards);
+        return MemberCardListResponse.memberCardListDtoBuilder(cards);
     }
 }

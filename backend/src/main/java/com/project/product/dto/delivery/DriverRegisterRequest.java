@@ -11,12 +11,20 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @Getter
-public class
-DriverRegisterRequest {
+public class DriverRegisterRequest {
 
     @NotBlank
     private String name;
 
     @NotBlank
     private String phone;
+
+    @NotBlank
+    private String addressCity;
+
+    @NotBlank
+    private String addressGu;
+
+    @NotBlank
+    private String addressDong;
 }

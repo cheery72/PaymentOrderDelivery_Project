@@ -17,9 +17,8 @@ public class MemberCardListResponse {
     private String status;
 
     private String name;
-
-
-    public static List<MemberCardListResponse> MemberCardListDtoBuilder(List<Card> cards){
+    
+    public static List<MemberCardListResponse> memberCardListDtoBuilder(List<Card> cards){
         return cards.stream()
                 .map(card -> MemberCardListResponse.builder()
                         .id(card.getId())
