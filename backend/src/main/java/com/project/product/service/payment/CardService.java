@@ -1,8 +1,8 @@
 package com.project.product.service.payment;
 
 import com.project.product.domain.payment.Card;
-import com.project.product.dto.payment.CardRegister;
-import com.project.product.dto.payment.MemberCardListDto;
+import com.project.product.dto.payment.CardRegisterRequest;
+import com.project.product.dto.payment.MemberCardListResponse;
 import com.project.product.repository.payment.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ public class CardService{
     private final CardRepository cardRepository;
 
     @Transactional
-    public Card registerCard(CardRegister cardRegister) {
-        Card card = Card.cardBuilder(cardRegister);
+    public Card registerCard(CardRegisterRequest cardRegisterRequest) {
+        Card card = Card.cardBuilder(cardRegisterRequest);
         return cardRepository.save(card);
     }
 
-    public List<MemberCardListDto> findMemberCardList(Long memberId){
+    public List<MemberCardListResponse> findMemberCardList(Long memberId){
         List<Card> cards = cardRepository.findAllByMemberId(memberId);
 
-        return MemberCardListDto.MemberCardListDtoBuilder(cards);
+        return MemberCardListResponse.MemberCardListDtoBuilder(cards);
     }
 }

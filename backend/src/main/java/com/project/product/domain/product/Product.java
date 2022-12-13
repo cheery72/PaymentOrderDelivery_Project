@@ -2,7 +2,7 @@ package com.project.product.domain.product;
 
 import com.project.product.domain.member.ShoppingBasket;
 import com.project.product.domain.order.Order;
-import com.project.product.dto.product.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,13 +57,13 @@ public class Product {
         this.shoppingBasket = shoppingBasket;
     }
 
-    public static Product productBuilder(ProductRegisterDto productRegisterDto){
+    public static Product productBuilder(ProductRegisterRequest productRegisterRequest){
         return Product.builder()
-                .seller(productRegisterDto.getSeller())
-                .name(productRegisterDto.getName())
-                .price(productRegisterDto.getPrice())
-                .category(productRegisterDto.getCategory())
-                .images(ProductImage.productImageBuilder(productRegisterDto.getImages()))
+                .seller(productRegisterRequest.getSeller())
+                .name(productRegisterRequest.getName())
+                .price(productRegisterRequest.getPrice())
+                .category(productRegisterRequest.getCategory())
+                .images(ProductImage.productImageBuilder(productRegisterRequest.getImages()))
                 .productStatus(ProductStatus.VERIFICATION)
                 .build();
     }

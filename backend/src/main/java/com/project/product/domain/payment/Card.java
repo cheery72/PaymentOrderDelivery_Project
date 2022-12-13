@@ -2,7 +2,7 @@ package com.project.product.domain.payment;
 
 import com.project.product.domain.BaseTime;
 import com.project.product.domain.member.Member;
-import com.project.product.dto.payment.CardRegister;
+import com.project.product.dto.payment.CardRegisterRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,10 +38,10 @@ public class Card extends BaseTime {
         this.member = member;
     }
 
-    public static Card cardBuilder(CardRegister cardRegister){
+    public static Card cardBuilder(CardRegisterRequest cardRegisterRequest){
         return Card.builder()
-                .id(cardRegister.getMemberId())
-                .name(cardRegister.getName())
+                .id(cardRegisterRequest.getMemberId())
+                .name(cardRegisterRequest.getName())
                 .money(50000)
                 .cardStatus(CardStatus.TRANSACTION_POSSIBILITY)
                 .build();

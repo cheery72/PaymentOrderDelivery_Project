@@ -7,8 +7,8 @@ import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
-import com.project.product.dto.order.OrderCreate;
-import com.project.product.dto.product.OrderProductListDto;
+import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.Page;
@@ -73,49 +72,49 @@ class OrderServiceTest {
     private OrderService orderService;
 
 
-    public Order commonCardOrderProduct(OrderCreate orderCreate, Card card) throws Exception {
+    public Order commonCardOrderProduct(OrderCreateRequest orderCreateRequest, Card card) throws Exception {
 
-        when(productRepository.findAllById(orderCreate.getProductId()))
+        when(productRepository.findAllById(orderCreateRequest.getProductId()))
                 .thenReturn(List.of(product));
 
-        when(couponRepository.findById(orderCreate.getCouponId()))
+        when(couponRepository.findById(orderCreateRequest.getCouponId()))
                 .thenReturn(Optional.of(coupon));
 
-        when(cardRepository.findById(orderCreate.getCardId()))
+        when(cardRepository.findById(orderCreateRequest.getCardId()))
                 .thenReturn(Optional.of(card));
 
-       return orderService.createOrder(orderCreate);
+       return orderService.createOrder(orderCreateRequest);
 
     }
 
-    public Order commonCardPointOrderProduct(OrderCreate orderCreate, Card card, Member member) throws Exception {
+    public Order commonCardPointOrderProduct(OrderCreateRequest orderCreateRequest, Card card, Member member) throws Exception {
 
-        when(productRepository.findAllById(orderCreate.getProductId()))
+        when(productRepository.findAllById(orderCreateRequest.getProductId()))
                 .thenReturn(List.of(product));
 
-        when(couponRepository.findById(orderCreate.getCouponId()))
+        when(couponRepository.findById(orderCreateRequest.getCouponId()))
                 .thenReturn(Optional.of(coupon));
 
-        when(cardRepository.findById(orderCreate.getCardId()))
+        when(cardRepository.findById(orderCreateRequest.getCardId()))
                 .thenReturn(Optional.of(card));
 
-        when(memberRepository.findById((orderCreate.getPurchaser())))
+        when(memberRepository.findById((orderCreateRequest.getPurchaser())))
                 .thenReturn(Optional.of(member));
 
-        return orderService.createOrder(orderCreate);
+        return orderService.createOrder(orderCreateRequest);
 
     }
 
     @Test
     @DisplayName("카드 결제 주문 생성")
     public void orderCardProduct() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,0,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
         card.setMoney(30000);
 
-        Order newOrder = commonCardOrderProduct(orderCreate, card);
+        Order newOrder = commonCardOrderProduct(orderCreateRequest, card);
 
         assertEquals(card.getMoney(),15000);
         assertEquals(newOrder.getOrderStatus(), OrderStatus.SHIPPING_PREPARATION);
@@ -124,12 +123,12 @@ class OrderServiceTest {
     @Test
     @DisplayName("포인트 결제 주문 생성")
     public void orderPointProduct() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,15000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,15000,
                 "문 앞", "POINT",1L,1L);
         Member member = new Member();
         member.setPoint(16000);
 
-        Order newOrder = commonCardPointOrderProduct(orderCreate, card, member);
+        Order newOrder = commonCardPointOrderProduct(orderCreateRequest, card, member);
 
         assertEquals(member.getPoint(),1000);
         assertEquals(member.getUsedPoint(),15000);
@@ -140,7 +139,7 @@ class OrderServiceTest {
     @Test
     @DisplayName("포인트 카드 결제 주문 생성")
     public void orderPointCardProduct() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,12000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
@@ -149,7 +148,7 @@ class OrderServiceTest {
         Member member = new Member();
         member.setPoint(16000);
 
-        Order newOrder = commonCardPointOrderProduct(orderCreate, card, member);
+        Order newOrder = commonCardPointOrderProduct(orderCreateRequest, card, member);
 
         assertEquals(card.getMoney(),27000);
         assertEquals(member.getPoint(),4000);
@@ -160,32 +159,32 @@ class OrderServiceTest {
     @Test
     @DisplayName("카드 정지 상태일 시에 결제 주문 실패")
     public void orderCardProductFail(){
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,12000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_STOP);
 
         Assertions.assertThrows(NoSuchElementException.class,
-                () ->  commonCardOrderProduct(orderCreate, card)).printStackTrace();
+                () ->  commonCardOrderProduct(orderCreateRequest, card)).printStackTrace();
     }
 
     @Test
     @DisplayName("포인트 부족할시에 결제 주문 실패")
     public void orderPointProductFail() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,15000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,15000,
                 "문 앞", "POINT",1L,1L);
 
         Member member = new Member();
         member.setPoint(14999);
 
         Assertions.assertThrows(NotPaymentPointException.class,
-                () ->  commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
+                () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 
     @Test
     @DisplayName("계좌 금액 부족 결제 주문 실패")
     public void orderCardMoneyFail() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,0,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
@@ -193,13 +192,13 @@ class OrderServiceTest {
 
 
         Assertions.assertThrows(NotPaymentCardException.class,
-                () ->  commonCardOrderProduct(orderCreate, card)).printStackTrace();
+                () ->  commonCardOrderProduct(orderCreateRequest, card)).printStackTrace();
     }
 
     @Test
     @DisplayName("포인트 및 카드 결제 포인트 부족 주문 실패")
     public void orderMoneyNoPointFail() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,7000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
@@ -208,13 +207,13 @@ class OrderServiceTest {
         member.setPoint(6000);
 
         Assertions.assertThrows(NotPaymentPointException.class,
-                () ->  commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
+                () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 
     @Test
     @DisplayName("포인트 및 카드 결제 포인트 부족 주문 실패")
     public void orderNoMoneyPointFail() throws Exception {
-        OrderCreate orderCreate = new OrderCreate(List.of(1L,2L),1L,15000,7000,
+        OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
         card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
@@ -224,7 +223,7 @@ class OrderServiceTest {
 
 
         Assertions.assertThrows(NotPaymentCardException.class,()
-                -> commonCardPointOrderProduct(orderCreate, card, member)).printStackTrace();
+                -> commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 
     @Test
@@ -232,15 +231,15 @@ class OrderServiceTest {
     public void findMemberOrderProductList(){
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(0,2);
-        List<OrderProductListDto> orderProductListDto = new ArrayList<>();
-        OrderProductListDto orderProductListDto1 =
-                new OrderProductListDto(1L,"노트북",15000,"전자기기"
+        List<OrderProductListResponse> orderProductListResponse = new ArrayList<>();
+        OrderProductListResponse orderProductListResponse1 =
+                new OrderProductListResponse(1L,"노트북",15000,"전자기기"
                         ,String.valueOf(OrderStatus.COMPLETED),"2022-11-22 02:51:54.881462");
-        OrderProductListDto orderProductListDto2 = new OrderProductListDto(2L,"노트북",15000,"전자기기"
+        OrderProductListResponse orderProductListResponse2 = new OrderProductListResponse(2L,"노트북",15000,"전자기기"
                 ,String.valueOf(OrderStatus.COMPLETED),"2022-11-22 02:51:54.881462");
-        orderProductListDto.add(orderProductListDto1);
-        orderProductListDto.add(orderProductListDto2);
-        Page<OrderProductListDto> page = new PageImpl<>(orderProductListDto,pageable, pageable.getOffset());
+        orderProductListResponse.add(orderProductListResponse1);
+        orderProductListResponse.add(orderProductListResponse2);
+        Page<OrderProductListResponse> page = new PageImpl<>(orderProductListResponse,pageable, pageable.getOffset());
 
         when(memberRepository.findById(memberId))
                 .thenReturn(Optional.of(member));
@@ -248,7 +247,7 @@ class OrderServiceTest {
         when(orderRepository.findAllByMemberOrderList(memberId,pageable))
                 .thenReturn(page);
 
-        Page<OrderProductListDto> memberOrderList = orderService.findMemberOrderList(memberId, pageable);
+        Page<OrderProductListResponse> memberOrderList = orderService.findMemberOrderList(memberId, pageable);
 
         assertEquals(memberOrderList.getTotalElements(),2);
         assertEquals(memberOrderList.getTotalPages(),1);

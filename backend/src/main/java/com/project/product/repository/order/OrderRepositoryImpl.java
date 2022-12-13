@@ -3,9 +3,8 @@ package com.project.product.repository.order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.QOrder;
 import com.project.product.domain.product.QProduct;
-import com.project.product.dto.order.MemberOrderListDto;
-import com.project.product.dto.product.OrderProductListDto;
-import com.project.product.dto.product.QOrderProductListDto;
+import com.project.product.dto.product.OrderProductListResponse;
+import com.project.product.dto.product.QOrderProductListResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,9 +25,9 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
     }
 
     @Override
-    public Page<OrderProductListDto> findAllByMemberOrderList(Long memberId, Pageable pageable) {
-        List<OrderProductListDto> orderProductListDtoList = queryFactory
-                .select(new QOrderProductListDto(
+    public Page<OrderProductListResponse> findAllByMemberOrderList(Long memberId, Pageable pageable) {
+        List<OrderProductListResponse> orderProductListDtoList = queryFactory
+                .select(new QOrderProductListResponse(
                         qProduct.id,
                         qProduct.name,
                         qProduct.price,

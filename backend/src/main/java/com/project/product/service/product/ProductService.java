@@ -1,7 +1,7 @@
 package com.project.product.service.product;
 
 import com.project.product.domain.product.Product;
-import com.project.product.dto.product.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterRequest;
 import com.project.product.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Product registerProduct(ProductRegisterDto productRegisterDto){
-        Product product = Product.productBuilder(productRegisterDto);
+    public Product registerProduct(ProductRegisterRequest productRegisterRequest){
+        Product product = Product.productBuilder(productRegisterRequest);
 
         return productRepository.save(product);
     }

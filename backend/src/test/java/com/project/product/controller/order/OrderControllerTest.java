@@ -2,7 +2,7 @@ package com.project.product.controller.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.product.domain.order.PayType;
-import com.project.product.dto.order.OrderCreate;
+import com.project.product.dto.order.OrderCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ class OrderControllerTest {
     @DisplayName("주문 생성")
     public void orderCreateTest() throws Exception {
         String body = objectMapper.writeValueAsString(
-                OrderCreate.builder()
+                OrderCreateRequest.builder()
                         .productId(List.of(1L,2L))
                         .purchaser(1L)
                         .totalPrice(15000)

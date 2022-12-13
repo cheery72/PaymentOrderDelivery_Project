@@ -1,6 +1,6 @@
 package com.project.product.controller.product;
 
-import com.project.product.dto.product.ProductRegisterDto;
+import com.project.product.dto.product.ProductRegisterRequest;
 import com.project.product.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,10 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> productCreate(@RequestBody ProductRegisterDto productRegisterDto){
+    public ResponseEntity<Object> productCreate(@RequestBody ProductRegisterRequest productRegisterRequest){
         log.info("product create start -----");
 
-        productService.registerProduct(productRegisterDto);
+        productService.registerProduct(productRegisterRequest);
 
         return ResponseEntity
                 .noContent()

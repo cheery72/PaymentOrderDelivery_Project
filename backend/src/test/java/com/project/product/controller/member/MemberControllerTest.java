@@ -1,7 +1,7 @@
 package com.project.product.controller.member;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.product.dto.member.MemberCreate;
+import com.project.product.dto.member.MemberCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class MemberControllerTest {
     @DisplayName("멤버 회원가입")
     public void orderCreateTest() throws Exception {
         String body = objectMapper.writeValueAsString(
-               new MemberCreate("asdf@naver.com", "1234", "김경민"
+               new MemberCreateRequest("asdf@naver.com", "1234", "김경민"
                     , "이미지1", "광주광역시", "북구", "각화동", "아파트명 동 호")
 
         );

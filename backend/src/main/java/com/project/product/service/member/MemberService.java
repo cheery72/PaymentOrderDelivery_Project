@@ -2,7 +2,7 @@ package com.project.product.service.member;
 
 import com.project.product.domain.member.Member;
 import com.project.product.domain.member.MemberCoupon;
-import com.project.product.dto.member.MemberCreate;
+import com.project.product.dto.member.MemberCreateRequest;
 import com.project.product.repository.member.MemberCouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class MemberService {
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
-    public Member joinMember(MemberCreate memberCreate) {
-        return memberRepository.save(Member.memberBuilder(memberCreate));
+    public Member joinMember(MemberCreateRequest memberCreateRequest) {
+        return memberRepository.save(Member.memberBuilder(memberCreateRequest));
     }
 
     @Transactional
