@@ -81,15 +81,14 @@ public class DriverControllerTest {
         MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/시" + "/구" + "/동" + "/possibility")
                 ).andExpect(status().isOk())
                 .andReturn();
+
         String contentAsString = mvcResult.getResponse().getContentAsString();
         List<DriverPossibilityListResponse> driverPossibilityListResponses
                 = List.of(objectMapper.readValue(contentAsString, DriverPossibilityListResponse[].class));
 
-        for(DriverPossibilityListResponse driverPossibilityListResponse : driverPossibilityListResponses){
-            assertThat(driverPossibilityListResponse.getStatus()).isNotIn(String.valueOf(DriverStatus.VACATION));
-        }
-
+        driverPossibilityListResponses.forEach(
+                d -> assertThat(d.getStatus())
+                .isNotIn(String.valueOf(DriverStatus.VACATION))
+        );
     }
-
-
 }
