@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -20,7 +22,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public ResponseEntity<Object> memberJoin(@RequestBody MemberCreateRequest memberCreateRequest) throws InterruptedException {
+    public ResponseEntity<Object> memberJoin(@RequestBody @Valid MemberCreateRequest memberCreateRequest) throws InterruptedException {
         log.info("member create start ------");
 
         Member newMember = memberService.joinMember(memberCreateRequest);

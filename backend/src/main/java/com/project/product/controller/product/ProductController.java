@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> productCreate(@RequestBody ProductRegisterRequest productRegisterRequest){
+    public ResponseEntity<Object> productCreate(@RequestBody @Valid ProductRegisterRequest productRegisterRequest){
         log.info("product create start -----");
 
         productService.registerProduct(productRegisterRequest);

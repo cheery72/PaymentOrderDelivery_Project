@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> cardRegister(@RequestBody CardRegisterRequest cardRegisterRequest){
+    public ResponseEntity<Object> cardRegister(@RequestBody @Valid CardRegisterRequest cardRegisterRequest){
         log.info("card register start ----");
 
         cardService.registerCard(cardRegisterRequest);

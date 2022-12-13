@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class OrderController {
 
 
     @PostMapping("/create-order")
-    public ResponseEntity<Object> orderCreate(@RequestBody OrderCreateRequest orderCreateRequest){
+    public ResponseEntity<Object> orderCreate(@RequestBody @Valid OrderCreateRequest orderCreateRequest){
         log.info("order create start -----");
 
         long startTime = System.currentTimeMillis();
