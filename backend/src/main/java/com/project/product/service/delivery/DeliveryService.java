@@ -14,8 +14,14 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DriverRepository driverRepository;
 
+    //Todo : 배달원이 현재 지역에서 가능한 모든 배달지 조회
+    public List<>
 
-    //Todo : 배달원과 배달지가 동일한 배달 리스트 조회해서 배달 등록
+    //Todo : 배달원이 조회한 배달지 상세 조회
 
-    //Todo : 배달 완료나 실패시 배달 상태 변경
+    //Todo : 배달원 배달지 등록
+
+    //Todo : 배달 완료 배달 상태 변경
+
+    //Todo : 배달 실패 배달 상태 변경
 }
