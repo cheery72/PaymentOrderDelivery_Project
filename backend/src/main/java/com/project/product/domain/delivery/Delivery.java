@@ -17,7 +17,13 @@ public class Delivery extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String location;
+    private String city;
+
+    private String gu;
+
+    private String dong;
+
+    private String addressDetail;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
