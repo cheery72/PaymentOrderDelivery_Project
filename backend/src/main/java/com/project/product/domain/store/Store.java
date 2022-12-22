@@ -29,6 +29,9 @@ public class Store {
 
     private String detail;
 
+    @Enumerated(EnumType.STRING)
+    private StoreStatus storeStatus;
+
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
