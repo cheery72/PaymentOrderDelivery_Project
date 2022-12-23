@@ -2,6 +2,7 @@ package com.project.product.domain.order;
 
 import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
+import com.project.product.domain.store.Store;
 import com.project.product.dto.order.OrderCreateRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,6 +53,10 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @Builder
     public Order(Long id, Long purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType,  OrderStatus orderStatus, List<Product> products) {

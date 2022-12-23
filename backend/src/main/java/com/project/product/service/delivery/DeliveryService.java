@@ -15,7 +15,6 @@ public class DeliveryService {
     private final DriverRepository driverRepository;
 
     //Todo : 배달원이 현재 지역에서 가능한 모든 배달지 조회
-    public List<>
 
     //Todo : 배달원이 조회한 배달지 상세 조회
 

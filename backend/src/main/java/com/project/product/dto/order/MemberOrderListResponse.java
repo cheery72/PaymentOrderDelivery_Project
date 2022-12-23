@@ -33,21 +33,4 @@ public class MemberOrderListResponse {
 
     private LocalDateTime approveDateTime;
 
-    @Enumerated(EnumType.STRING)
-    private ApproveStatus approveStatus;
-
-    @Enumerated(EnumType.STRING)
-    private PayType payType;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Product> products = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-
 }
