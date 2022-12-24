@@ -7,6 +7,9 @@ import com.project.product.domain.order.PayType;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
+import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto;
+import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListRequest;
+import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.exception.NotFindMemberException;
@@ -61,6 +64,10 @@ public class OrderService {
         orderRepository.save(order);
 
         return order;
+    }
+
+    public List<DeliveryPossibilityStoreOrderListResponse> findStoreOrderList(DeliveryPossibilityStoreOrderListRequest deliveryPossibilityStoreOrderListRequest){
+        return orderRepository.findAllByStoreOrderList(deliveryPossibilityStoreOrderListRequest);
     }
 
     @Transactional
