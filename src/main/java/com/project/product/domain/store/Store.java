@@ -42,11 +42,7 @@ public class Store {
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-<<<<<<< HEAD:src/main/java/com/project/product/domain/store/Store.java
-    public Store(Long id, String name, String city, String gu, String dong, String phone, String detail, List<Review> reviews) {
-=======
-    public Store(Long id, String city, String gu, String dong, String detail, List<Review> reviews, List<Order> orders) {
->>>>>>> develop:backend/src/main/java/com/project/product/domain/store/Store.java
+    public Store(Long id, String name, String city, String gu, String dong, String phone, String detail, List<Review> reviews, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.city = city;

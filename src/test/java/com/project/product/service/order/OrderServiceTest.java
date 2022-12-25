@@ -29,6 +29,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,7 +84,7 @@ class OrderServiceTest {
         when(cardRepository.findById(orderCreateRequest.getCardId()))
                 .thenReturn(Optional.of(card));
 
-       return orderService.createOrder(orderCreateRequest);
+       return orderService.createOrder(LocalDateTime.now(),orderCreateRequest);
 
     }
 
@@ -101,7 +102,7 @@ class OrderServiceTest {
         when(memberRepository.findById((orderCreateRequest.getPurchaser())))
                 .thenReturn(Optional.of(member));
 
-        return orderService.createOrder(orderCreateRequest);
+        return orderService.createOrder(LocalDateTime.now(),orderCreateRequest);
 
     }
 
