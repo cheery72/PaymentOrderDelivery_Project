@@ -1,10 +1,13 @@
 package com.project.product.controller.order;
 
-import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto;
+import com.project.product.domain.order.PayType;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListRequest;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.factory.PaymentFactory;
 import com.project.product.service.order.OrderService;
+import com.project.product.service.payment.PaymentService;
+import com.project.product.service.payment.CardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,21 +22,15 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
+    private final PaymentFactory paymentFactory;
     private final OrderService orderService;
-
 
     @PostMapping("/create-order")
     public ResponseEntity<Object> orderCreate(@RequestBody @Valid OrderCreateRequest orderCreateRequest){
         log.info("order create start -----");
 
-        long startTime = System.currentTimeMillis();
-
-        orderService.createOrder(orderCreateRequest);
-
-        log.info("order create end -----");
-        long endTime = System.currentTimeMillis();
-        long resultTime = endTime-startTime;
-        log.info("resultTime = {}",resultTime);
+        PaymentService service = paymentFactory.getPayType(orderCreateRequest.getUsePoint(),orderCreateRequest.getPayType());
+        orderService.createOrder(service.payment(orderCreateRequest),orderCreateRequest);
 
         return ResponseEntity
                 .noContent()
@@ -44,14 +41,7 @@ public class OrderController {
     public ResponseEntity<Object> orderDelete(@PathVariable Long orderId){
         log.info("order delete start ----");
 
-        long startTime = System.currentTimeMillis();
-
         orderService.deleteOrder(orderId);
-
-        log.info("order delete end ----");
-        long endTime = System.currentTimeMillis();
-        long resultTime = endTime-startTime;
-        log.info("resultTime = {}",resultTime);
 
         return ResponseEntity
                 .noContent()

@@ -102,9 +102,21 @@ public class Member {
         return false;
     }
 
-    public void memberPointPayment(int orderPoint, Member member,int discount){
-        this.point = member.getPoint()-(orderPoint - (orderPoint * (discount / 100)));
-        this.usedPoint = member.usedPoint+orderPoint;
+    public int memberPointPayment(int totalPrice, int usePoint, Member member,int discount){
+        int discountPrice = totalPrice - (totalPrice / 100 * discount);
+
+        //  Todo : 포인트 및 카드 결제
+        if (usePoint < discountPrice) {
+            this.usedPoint = member.usedPoint + usePoint;
+            this.point = member.getPoint() - usePoint;
+            return discountPrice - usePoint;
+        // Todo : 할인 받은 금액이 요청한 포인트보다 작을때
+        }else {
+            this.usedPoint = member.usedPoint + discountPrice;
+            this.point = member.getPoint() - discountPrice;
+        }
+
+        return 0;
     }
 
 }
