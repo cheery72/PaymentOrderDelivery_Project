@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class DeliveryPossibilityStoreOrderListDto {
 
@@ -30,7 +31,9 @@ public class DeliveryPossibilityStoreOrderListDto {
     @Getter
     public static class DeliveryPossibilityStoreOrderListResponse {
 
-        private Long orderId;
+        private Long orderCount;
+
+        private String storeName;
 
         private Long storeId;
 
@@ -44,8 +47,9 @@ public class DeliveryPossibilityStoreOrderListDto {
 
         @QueryProjection
         @Builder
-        public DeliveryPossibilityStoreOrderListResponse(Long orderId, Long storeId, String city, String gu, String dong, String detail) {
-            this.orderId = orderId;
+        public DeliveryPossibilityStoreOrderListResponse(Long orderCount, String storeName, Long storeId, String city, String gu, String dong, String detail) {
+            this.orderCount = orderCount;
+            this.storeName = storeName;
             this.storeId = storeId;
             this.city = city;
             this.gu = gu;

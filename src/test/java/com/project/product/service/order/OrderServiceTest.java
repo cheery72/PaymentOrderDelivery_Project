@@ -7,6 +7,8 @@ import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
+import com.project.product.domain.store.Store;
+import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.exception.NotPaymentCardException;
@@ -16,12 +18,14 @@ import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.Page;
@@ -31,6 +35,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +47,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 class OrderServiceTest {
+
+    @Mock
+    private Order order;
 
     @Mock
     private Member member;
@@ -252,5 +261,26 @@ class OrderServiceTest {
 
         assertEquals(memberOrderList.getTotalElements(),2);
         assertEquals(memberOrderList.getTotalPages(),1);
+    }
+
+    @Test
+    @DisplayName("배달 가능지 가게 정보 및 가게 주문 건수 조회")
+    public void findStoreOrderListTest(){
+        String city = "시";
+        String gu = "구";
+        String dong = "동";
+
+        DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse storeOrderListResponse =
+                new DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse(4L,"가게1",1L,"시","구","동","주소");
+
+        when(orderRepository.findAllByStoreOrderList(any(),any(),any()))
+                .thenReturn(List.of(storeOrderListResponse));
+
+        List<DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse> newStoreOrderList = orderService.findStoreOrderList(city,gu,dong);
+        
+        assertEquals(newStoreOrderList.get(0).getCity(),"시");
+        assertEquals(newStoreOrderList.get(0).getGu(),"구");
+        assertEquals(newStoreOrderList.get(0).getDong(),"동");
+        assertEquals(newStoreOrderList.get(0).getDetail(),"주소");
     }
 }

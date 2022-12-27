@@ -48,13 +48,14 @@ public class OrderController {
                 .build();
     }
 
-    @GetMapping("/store-order")
-    public ResponseEntity<List<DeliveryPossibilityStoreOrderListResponse>> StoreOrderListFind(@RequestBody @Valid DeliveryPossibilityStoreOrderListRequest
-                                                                                                            deliveryPossibilityStoreOrderListRequest){
+    @GetMapping("/{city}/{gu}/{dong}/store-order")
+    public ResponseEntity<List<DeliveryPossibilityStoreOrderListResponse>> StoreOrderListFind(@PathVariable(name = "city") String city,
+                                                                                              @PathVariable(name = "gu") String gu,
+                                                                                              @PathVariable(name = "dong") String dong){
         log.info("find store delivery possibility order list");
 
         return ResponseEntity
-                .ok(orderService.findStoreOrderList(deliveryPossibilityStoreOrderListRequest));
+                .ok(orderService.findStoreOrderList(city,gu,dong));
     }
 
 }

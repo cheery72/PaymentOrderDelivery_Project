@@ -21,6 +21,7 @@ public class StoreService {
         storeRepository.save(Store.toStore(storeRegisterRequest));
     }
 
+    //Todo: 가게 상세 정보 조회
     public StoreDetailResponse findStoreDetail(Long storeId){
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new NotFoundStoreException("등록되지 않은 가게입니다."));

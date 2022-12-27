@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface OrderRepositoryCustom {
     Page<OrderProductListResponse> findAllByMemberOrderList(Long memberId, Pageable pageable);
-    List<DeliveryPossibilityStoreOrderListResponse> findAllByStoreOrderList(DeliveryPossibilityStoreOrderListRequest deliveryPossibilityStoreOrderListRequest);
+    List<DeliveryPossibilityStoreOrderListResponse> findAllByStoreOrderList(String city, String gu, String dong);
 }
