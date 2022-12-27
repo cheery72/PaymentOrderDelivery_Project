@@ -1,15 +1,12 @@
 package com.project.product.service.payment;
 
 import com.project.product.domain.event.Coupon;
-import com.project.product.domain.member.Member;
 import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.payment.CardRegisterRequest;
 import com.project.product.dto.payment.MemberCardListResponse;
-import com.project.product.exception.NotFindMemberException;
 import com.project.product.exception.NotPaymentCardException;
-import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.payment.CardRepository;
 import lombok.RequiredArgsConstructor;

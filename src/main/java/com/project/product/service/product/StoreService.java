@@ -1,7 +1,9 @@
 package com.project.product.service.product;
 
 import com.project.product.domain.store.Store;
+import com.project.product.dto.order.StoreDetailResponse;
 import com.project.product.dto.product.StoreRegisterRequest;
+import com.project.product.exception.NotFoundStoreException;
 import com.project.product.repository.product.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,5 +19,12 @@ public class StoreService {
     @Transactional
     public void registerFranchiseStore(StoreRegisterRequest storeRegisterRequest){
         storeRepository.save(Store.toStore(storeRegisterRequest));
+    }
+
+    public StoreDetailResponse findStoreDetail(Long storeId){
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new NotFoundStoreException("등록되지 않은 가게입니다."));
+
+        return StoreDetailResponse.toStoreDetailResponse(store);
     }
 }
