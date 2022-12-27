@@ -7,7 +7,7 @@ import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.dto.member.MemberCreateRequest;
 import com.project.product.dto.order.OrderCreateRequest;
-import com.project.product.exception.NotFindMemberException;
+import com.project.product.exception.NotFoundMemberException;
 import com.project.product.exception.NotPaymentCardException;
 import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
@@ -55,7 +55,7 @@ public class MemberService implements PaymentService {
         int discount = coupon.couponExpiryCheck(coupon);
 
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
-                .orElseThrow(() -> new NotFindMemberException("요청한 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMemberException("요청한 멤버를 찾을 수 없습니다."));
         if(orderCreateRequest.getUsePoint() <= member.getPoint()){
             int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), member, discount);
 

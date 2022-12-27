@@ -5,7 +5,7 @@ import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.Del
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.product.OrderProductListResponse;
-import com.project.product.exception.NotFindMemberException;
+import com.project.product.exception.NotFoundMemberException;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.product.ProductRepository;
@@ -40,7 +40,7 @@ public class OrderService {
     //Todo: 주문한 물품 전체 조회
     public Page<OrderProductListResponse> findMemberOrderList(Long memberId, Pageable pageable){
         memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFindMemberException("요청한 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMemberException("요청한 멤버를 찾을 수 없습니다."));
 
         return orderRepository.findAllByMemberOrderList(memberId, pageable);
     }
