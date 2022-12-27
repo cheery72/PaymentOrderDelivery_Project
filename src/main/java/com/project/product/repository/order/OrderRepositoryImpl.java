@@ -10,6 +10,7 @@ import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.Del
 import com.project.product.dto.delivery.QDeliveryPossibilityStoreOrderListDto_DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.dto.product.QOrderProductListResponse;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -56,10 +57,11 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
     }
 
     @Override
-    public List<DeliveryPossibilityStoreOrderListResponse> findAllByStoreOrderList(DeliveryPossibilityStoreOrderListRequest deliveryPossibilityStoreOrderListRequest) {
+    public List<DeliveryPossibilityStoreOrderListResponse> findAllByStoreOrderList(String city, String gu, String dong) {
         return queryFactory
                 .select(new QDeliveryPossibilityStoreOrderListDto_DeliveryPossibilityStoreOrderListResponse(
-                        qOrder.id,
+                        qStore.id.count(),
+                        qStore.name,
                         qStore.id,
                         qStore.city,
                         qStore.gu,
@@ -71,10 +73,11 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
                 .on(qOrder.store.id.eq(qStore.id))
                 .where(
                         qOrder.orderStatus.eq(OrderStatus.SHIPPING_PREPARATION),
-                        qStore.city.eq(deliveryPossibilityStoreOrderListRequest.getCity()),
-                        qStore.gu.eq(deliveryPossibilityStoreOrderListRequest.getGu()),
-                        qStore.dong.eq(deliveryPossibilityStoreOrderListRequest.getGu())
+                        qStore.city.eq(city),
+                        qStore.gu.eq(gu),
+                        qStore.dong.eq(dong)
                 )
+                .groupBy(qStore.id)
                 .fetch();
     }
 }

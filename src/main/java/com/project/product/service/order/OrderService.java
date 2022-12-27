@@ -33,8 +33,9 @@ public class OrderService {
                 productRepository.findAllById(orderCreateRequest.getProductId())));
     }
 
-    public List<DeliveryPossibilityStoreOrderListResponse> findStoreOrderList(DeliveryPossibilityStoreOrderListRequest deliveryPossibilityStoreOrderListRequest){
-        return orderRepository.findAllByStoreOrderList(deliveryPossibilityStoreOrderListRequest);
+    //Todo: 배달 가능지 가게 정보 및 가게 주문 건수 조회
+    public List<DeliveryPossibilityStoreOrderListResponse> findStoreOrderList(String city, String gu, String dong){
+        return orderRepository.findAllByStoreOrderList(city, gu, dong);
     }
 
     //Todo: 주문한 물품 전체 조회
@@ -50,9 +51,9 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
+
+    //Todo: 주문 상세 조회
+
     //Todo: 배송 중으로 변경하기 위해서는 택배사랑 연결이 되어야되는 로직 구성
-
-
-
 }
 
