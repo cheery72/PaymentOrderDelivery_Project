@@ -45,4 +45,10 @@ public class ServiceExceptionHandler {
         final ErrorResponse errorResponse = ErrorResponse.builder().code("Not found driver").message(e.getMessage()).build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @ExceptionHandler(NotFoundDeliveryException.class)
+    protected ResponseEntity NotFoundDeliveryException(NotFoundDeliveryException e){
+        final ErrorResponse errorResponse = ErrorResponse.builder().code("Not found delivery").message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }
