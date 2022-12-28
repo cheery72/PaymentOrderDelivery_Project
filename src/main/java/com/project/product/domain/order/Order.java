@@ -96,4 +96,8 @@ public class Order {
                 .products(products)
                 .build();
     }
+
+    public void completeOrder(){
+        this.orderStatus = OrderStatus.COMPLETED;
+    }
 }

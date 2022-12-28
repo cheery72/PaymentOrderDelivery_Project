@@ -70,4 +70,9 @@ public class Delivery{
                 .order(order)
                 .build();
     }
+
+    public void setDeliveryStatus(){
+        this.deliveryStatus = DeliveryStatus.COMPLETE;
+        this.completeTime = LocalDateTime.now();
+    }
 }
