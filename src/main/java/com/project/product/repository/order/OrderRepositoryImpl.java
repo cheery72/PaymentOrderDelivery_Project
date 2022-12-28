@@ -1,5 +1,6 @@
 package com.project.product.repository.order;
 
+import com.project.product.domain.member.QMember;
 import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.QOrder;
@@ -7,6 +8,8 @@ import com.project.product.domain.product.QProduct;
 import com.project.product.domain.store.QStore;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.delivery.QDeliveryPossibilityStoreOrderListDto_DeliveryPossibilityStoreOrderListResponse;
+import com.project.product.dto.order.OrderPurchaserAddressResponse;
+import com.project.product.dto.order.QOrderPurchaserAddressResponse;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.dto.product.QOrderProductListResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,6 +25,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
     private static final QOrder qOrder = QOrder.order;
     private static final QProduct qProduct = QProduct.product;
     private static final QStore qStore = QStore.store;
+    private static final QMember qMember = QMember.member;
 
     private final JPAQueryFactory queryFactory;
 
@@ -87,5 +91,21 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
                 .fetchJoin()
                 .where(qOrder.store.id.eq(storeId).and(qOrder.orderStatus.eq(orderStatus)))
                 .fetch();
+    }
+
+    @Override
+    public OrderPurchaserAddressResponse findByOrderIdPurchaserAddress(Long orderId) {
+        return queryFactory
+                .select(new QOrderPurchaserAddressResponse(
+                        qOrder.id,
+                        qMember.addressCity,
+                        qMember.addressGu,
+                        qMember.addressDong,
+                        qMember.addressDetail
+                ))
+                .from(qOrder)
+                .leftJoin(qOrder.member,qMember)
+                .where(qOrder.id.eq(orderId))
+                .fetchOne();
     }
 }

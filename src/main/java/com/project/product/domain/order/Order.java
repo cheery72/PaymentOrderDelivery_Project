@@ -59,7 +59,7 @@ public class Order {
     private Store store;
 
     @Builder
-    public Order(Long id, Long purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType,  OrderStatus orderStatus, List<Product> products) {
+    public Order(Long id, Long purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, OrderStatus orderStatus, List<Product> products, Member member, Store store) {
         this.id = id;
         this.purchaser = purchaser;
         this.totalPrice = totalPrice;
@@ -72,6 +72,8 @@ public class Order {
         this.payType = payType;
         this.orderStatus = orderStatus;
         this.products = products;
+        this.member = member;
+        this.store = store;
     }
 
     public static Order orderBuilder(LocalDateTime paymentDate, OrderCreateRequest orderCreateRequest, List<Product> products){

@@ -4,6 +4,7 @@ import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.dto.order.OrderPurchaserAddressResponse;
 import com.project.product.dto.order.StoreOrderProductNameListResponse;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.exception.NotFoundMemberException;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +61,10 @@ public class OrderService {
     }
 
 
-    //Todo: 주문 상세 조회
+    //Todo: 주문 구매자 주소 조회
+    public OrderPurchaserAddressResponse findOrderPurchaserAddress(Long orderId){
+        return orderRepository.findByOrderIdPurchaserAddress(orderId);
+    }
 
     //Todo: 배송 중으로 변경하기 위해서는 택배사랑 연결이 되어야되는 로직 구성
 }
