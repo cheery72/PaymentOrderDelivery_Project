@@ -2,6 +2,7 @@ package com.project.product.controller.order;
 
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.dto.order.OrderPurchaserAddressResponse;
 import com.project.product.dto.order.StoreOrderProductNameListResponse;
 import com.project.product.factory.PaymentFactory;
 import com.project.product.service.order.OrderService;
@@ -61,6 +62,14 @@ public class OrderController {
         log.info("find store order list");
 
         return ResponseEntity.ok(orderService.findStoreOrderProductNameList(storeId));
+    }
+
+    @GetMapping("/{orderId}/purchaser-address")
+    public ResponseEntity<OrderPurchaserAddressResponse> orderPurchaserAddressFind(@PathVariable Long orderId){
+        log.info("find order purchaser address");
+
+        return ResponseEntity
+                .ok(orderService.findOrderPurchaserAddress(orderId));
     }
 
 }
