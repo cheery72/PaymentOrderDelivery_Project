@@ -271,7 +271,7 @@ class OrderServiceTest {
         String dong = "동";
 
         DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse storeOrderListResponse =
-                new DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse(4L,"가게1",1L,"시","구","동","주소");
+                new DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse(4,"가게1",1L,"시","구","동","주소");
 
         when(orderRepository.findAllByStoreOrderList(any(),any(),any()))
                 .thenReturn(List.of(storeOrderListResponse));

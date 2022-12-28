@@ -1,13 +1,11 @@
 package com.project.product.controller.order;
 
-import com.project.product.domain.order.PayType;
-import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListRequest;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.dto.order.StoreOrderProductNameListResponse;
 import com.project.product.factory.PaymentFactory;
 import com.project.product.service.order.OrderService;
 import com.project.product.service.payment.PaymentService;
-import com.project.product.service.payment.CardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -49,13 +47,20 @@ public class OrderController {
     }
 
     @GetMapping("/{city}/{gu}/{dong}/store-order")
-    public ResponseEntity<List<DeliveryPossibilityStoreOrderListResponse>> StoreOrderListFind(@PathVariable(name = "city") String city,
+    public ResponseEntity<List<DeliveryPossibilityStoreOrderListResponse>> storeOrderListFind(@PathVariable(name = "city") String city,
                                                                                               @PathVariable(name = "gu") String gu,
                                                                                               @PathVariable(name = "dong") String dong){
         log.info("find store delivery possibility order list");
 
         return ResponseEntity
                 .ok(orderService.findStoreOrderList(city,gu,dong));
+    }
+
+    @GetMapping("/{storeId}/store-order-list")
+    public ResponseEntity<List<StoreOrderProductNameListResponse>> storeOrderProductNameListFind(@PathVariable Long storeId){
+        log.info("find store order list");
+
+        return ResponseEntity.ok(orderService.findStoreOrderProductNameList(storeId));
     }
 
 }

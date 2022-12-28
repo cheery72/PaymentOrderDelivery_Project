@@ -1,16 +1,14 @@
 package com.project.product.repository.order;
 
+import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.order.QOrder;
 import com.project.product.domain.product.QProduct;
 import com.project.product.domain.store.QStore;
-import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto;
-import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListRequest;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.delivery.QDeliveryPossibilityStoreOrderListDto_DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.dto.product.QOrderProductListResponse;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -60,7 +58,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
     public List<DeliveryPossibilityStoreOrderListResponse> findAllByStoreOrderList(String city, String gu, String dong) {
         return queryFactory
                 .select(new QDeliveryPossibilityStoreOrderListDto_DeliveryPossibilityStoreOrderListResponse(
-                        qStore.id.count(),
+                        qStore.id.count().intValue(),
                         qStore.name,
                         qStore.id,
                         qStore.city,
@@ -78,6 +76,16 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom{
                         qStore.dong.eq(dong)
                 )
                 .groupBy(qStore.id)
+                .fetch();
+    }
+
+    @Override
+    public List<Order> findByStoreIdAndOrderStatusIs(Long storeId, OrderStatus orderStatus) {
+        return queryFactory
+                .selectFrom(qOrder)
+                .leftJoin(qOrder.products,qProduct)
+                .fetchJoin()
+                .where(qOrder.store.id.eq(storeId).and(qOrder.orderStatus.eq(orderStatus)))
                 .fetch();
     }
 }
