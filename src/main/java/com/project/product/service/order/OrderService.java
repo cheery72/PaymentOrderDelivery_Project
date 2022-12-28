@@ -1,9 +1,10 @@
 package com.project.product.service.order;
 
 import com.project.product.domain.order.Order;
-import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListRequest;
+import com.project.product.domain.order.OrderStatus;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.DeliveryPossibilityStoreOrderListResponse;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.dto.order.StoreOrderProductNameListResponse;
 import com.project.product.dto.product.OrderProductListResponse;
 import com.project.product.exception.NotFoundMemberException;
 import com.project.product.repository.member.MemberRepository;
@@ -49,6 +50,12 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long orderId){
         orderRepository.deleteById(orderId);
+    }
+
+    //Todo: 가게 전체 주문 정보 조회
+    public List<StoreOrderProductNameListResponse> findStoreOrderProductNameList(Long storeId){
+        return StoreOrderProductNameListResponse.toStoreOrderListResponse(orderRepository
+                .findByStoreIdAndOrderStatusIs(storeId, OrderStatus.SHIPPING_PREPARATION));
     }
 
 

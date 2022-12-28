@@ -31,7 +31,7 @@ public class DeliveryPossibilityStoreOrderListDto {
     @Getter
     public static class DeliveryPossibilityStoreOrderListResponse {
 
-        private Long orderCount;
+        private Integer orderCount;
 
         private String storeName;
 
@@ -47,7 +47,7 @@ public class DeliveryPossibilityStoreOrderListDto {
 
         @QueryProjection
         @Builder
-        public DeliveryPossibilityStoreOrderListResponse(Long orderCount, String storeName, Long storeId, String city, String gu, String dong, String detail) {
+        public DeliveryPossibilityStoreOrderListResponse(Integer orderCount, String storeName, Long storeId, String city, String gu, String dong, String detail) {
             this.orderCount = orderCount;
             this.storeName = storeName;
             this.storeId = storeId;
