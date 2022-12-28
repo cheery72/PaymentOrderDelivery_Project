@@ -33,4 +33,16 @@ public class ServiceExceptionHandler {
         final ErrorResponse errorResponse = ErrorResponse.builder().code("Not found Store").message(e.getMessage()).build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @ExceptionHandler(NotFoundOrderException.class)
+    protected ResponseEntity NotFoundOrderException(NotFoundOrderException e){
+        final ErrorResponse errorResponse = ErrorResponse.builder().code("Not found Order").message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(NotFoundDriverException.class)
+    protected ResponseEntity NotFoundDriverException(NotFoundOrderException e){
+        final ErrorResponse errorResponse = ErrorResponse.builder().code("Not found driver").message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }

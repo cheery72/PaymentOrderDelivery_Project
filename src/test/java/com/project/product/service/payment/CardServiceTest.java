@@ -59,12 +59,12 @@ class CardServiceTest {
         Long memberId = 1L;
         List<Card> cards = new ArrayList<>();
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setName("은행1");
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setName("은행1");
         cards.add(card);
         Card card2 = new Card();
-        card2.setCardStatus(CardStatus.TRANSACTION_STOP);
-        card2.setName("은행2");
+//        card2.setCardStatus(CardStatus.TRANSACTION_STOP);
+//        card2.setName("은행2");
         cards.add(card2);
 
         when(cardRepository.findAllByMemberId(memberId))

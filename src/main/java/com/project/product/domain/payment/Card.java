@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor
-@Setter
 public class Card extends BaseTime {
 
     @Id

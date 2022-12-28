@@ -121,8 +121,8 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setMoney(30000);
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setMoney(30000);
 
         Order newOrder = commonCardOrderProduct(orderCreateRequest, card);
 
@@ -135,8 +135,8 @@ class OrderServiceTest {
     public void orderPointProduct() throws Exception {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,15000,
                 "문 앞", "POINT",1L,1L);
-        Member member = new Member();
-        member.setPoint(16000);
+        Member member = Mockito.mock(Member.class);
+//        member.setPoint(16000);
 
         Order newOrder = commonCardPointOrderProduct(orderCreateRequest, card, member);
 
@@ -152,11 +152,12 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setMoney(30000);
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setMoney(30000);
 
-        Member member = new Member();
-        member.setPoint(16000);
+        Member member = Mockito.mock(Member.class);
+
+//        member.setPoint(16000);
 
         Order newOrder = commonCardPointOrderProduct(orderCreateRequest, card, member);
 
@@ -172,7 +173,7 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,12000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_STOP);
+//        card.setCardStatus(CardStatus.TRANSACTION_STOP);
 
         Assertions.assertThrows(NoSuchElementException.class,
                 () ->  commonCardOrderProduct(orderCreateRequest, card)).printStackTrace();
@@ -184,8 +185,8 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,15000,
                 "문 앞", "POINT",1L,1L);
 
-        Member member = new Member();
-        member.setPoint(14999);
+        Member member = Mockito.mock(Member.class);
+//        member.setPoint(14999);
 
         Assertions.assertThrows(NotPaymentPointException.class,
                 () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
@@ -197,8 +198,8 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,0,
                 "문 앞", "CARD",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setMoney(14999);
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setMoney(14999);
 
 
         Assertions.assertThrows(NotPaymentCardException.class,
@@ -211,10 +212,10 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setMoney(18000);
-        Member member = new Member();
-        member.setPoint(6000);
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setMoney(18000);
+        Member member = Mockito.mock(Member.class);
+//        member.setPoint(6000);
 
         Assertions.assertThrows(NotPaymentPointException.class,
                 () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
@@ -226,10 +227,11 @@ class OrderServiceTest {
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(1L,2L),1L,15000,7000,
                 "문 앞", "ALL",1L,1L);
         Card card = new Card();
-        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
-        card.setMoney(6999);
-        Member member = new Member();
-        member.setPoint(8000);
+//        card.setCardStatus(CardStatus.TRANSACTION_POSSIBILITY);
+//        card.setMoney(6999);
+        Member member = Mockito.mock(Member.class);
+
+//        member.setPoint(8000);
 
 
         Assertions.assertThrows(NotPaymentCardException.class,()

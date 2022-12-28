@@ -12,8 +12,7 @@ import java.util.List;
 @Table
 @Entity
 @Getter
-@NoArgsConstructor
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
