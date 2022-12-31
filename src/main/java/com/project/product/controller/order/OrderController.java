@@ -4,7 +4,7 @@ import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.Del
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.order.OrderPurchaserAddressResponse;
 import com.project.product.dto.order.StoreOrderProductNameListResponse;
-import com.project.product.factory.PaymentFactory;
+import com.project.product.factory.PaymentAbstractFactory;
 import com.project.product.service.order.OrderService;
 import com.project.product.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +21,14 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final PaymentFactory paymentFactory;
+    private final PaymentAbstractFactory paymentAbstractFactory;
     private final OrderService orderService;
 
     @PostMapping("/create-order")
     public ResponseEntity<Object> orderCreate(@RequestBody @Valid OrderCreateRequest orderCreateRequest){
         log.info("order create start -----");
 
-        PaymentService service = paymentFactory.getPayType(orderCreateRequest.getUsePoint(),orderCreateRequest.getPayType());
+        PaymentService service = paymentAbstractFactory.getPayType(orderCreateRequest.getUsePoint(),orderCreateRequest.getPayType());
         orderService.createOrder(service.payment(orderCreateRequest),orderCreateRequest);
 
         return ResponseEntity

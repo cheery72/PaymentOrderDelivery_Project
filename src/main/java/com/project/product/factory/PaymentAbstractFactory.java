@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
-public class PaymentFactory {
+public class PaymentAbstractFactory {
 
     private final CardService cardService;
     private final MemberService memberService;
