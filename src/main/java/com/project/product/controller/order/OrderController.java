@@ -9,6 +9,7 @@ import com.project.product.service.order.OrderService;
 import com.project.product.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,24 +27,22 @@ public class OrderController {
 
     @PostMapping("/create-order")
     public ResponseEntity<Object> orderCreate(@RequestBody @Valid OrderCreateRequest orderCreateRequest){
-        log.info("order create start -----");
 
         PaymentService service = paymentAbstractFactory.getPayType(orderCreateRequest.getUsePoint(),orderCreateRequest.getPayType());
         orderService.createOrder(service.payment(orderCreateRequest),orderCreateRequest);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.CREATED)
                 .build();
     }
 
     @DeleteMapping("/{orderId}/delete-order")
     public ResponseEntity<Object> orderDelete(@PathVariable Long orderId){
-        log.info("order delete start ----");
 
         orderService.deleteOrder(orderId);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 

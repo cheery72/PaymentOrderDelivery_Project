@@ -4,6 +4,7 @@ import com.project.product.dto.product.ProductRegisterRequest;
 import com.project.product.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,11 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> productCreate(@RequestBody @Valid ProductRegisterRequest productRegisterRequest){
-        log.info("product create start -----");
 
         productService.registerProduct(productRegisterRequest);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.CREATED)
                 .build();
     }
 }
