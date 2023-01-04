@@ -21,7 +21,6 @@ public class StoreController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> franchiseStoreRegister(@RequestBody @Valid StoreRegisterRequest storeRegisterRequest){
-        log.info("franchiseStoreRegister start");
 
         storeService.registerFranchiseStore(storeRegisterRequest);
 
@@ -32,7 +31,6 @@ public class StoreController {
 
     @GetMapping("/{storeId}/detail-store")
     public ResponseEntity<StoreDetailResponse> storeDetailFind(@PathVariable Long storeId){
-        log.info("find store detail");
 
         return ResponseEntity
                 .ok(storeService.findStoreDetail(storeId));

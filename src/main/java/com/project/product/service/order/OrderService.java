@@ -31,7 +31,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Order createOrder(LocalDateTime paymentTime, OrderCreateRequest orderCreateRequest) throws RuntimeException {
+    public Order createOrder(LocalDateTime paymentTime, OrderCreateRequest orderCreateRequest) {
         return orderRepository.save(Order.orderBuilder(paymentTime, orderCreateRequest,
                 productRepository.findAllById(orderCreateRequest.getProductId())));
     }

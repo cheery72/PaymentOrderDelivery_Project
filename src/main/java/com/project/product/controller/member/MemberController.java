@@ -5,6 +5,7 @@ import com.project.product.dto.member.MemberCreateRequest;
 import com.project.product.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,13 +24,12 @@ public class MemberController {
 
     @PostMapping("/join")
     public ResponseEntity<Object> memberJoin(@RequestBody @Valid MemberCreateRequest memberCreateRequest) throws InterruptedException {
-        log.info("member create start ------");
 
         Member newMember = memberService.joinMember(memberCreateRequest);
         memberService.joinProvideCoupon(newMember);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.CREATED)
                 .build();
     }
 }

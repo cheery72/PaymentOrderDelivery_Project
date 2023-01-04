@@ -5,6 +5,7 @@ import com.project.product.dto.delivery.DriverPossibilityListResponse;
 import com.project.product.service.delivery.DriverService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +22,11 @@ public class DriverController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> driverRegister(@RequestBody @Valid DriverRegisterRequest driverRegisterRequest){
-        log.info("Driver Register Start");
 
         driverService.registerDriver(driverRegisterRequest);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.CREATED)
                 .build();
     }
 
@@ -34,8 +34,6 @@ public class DriverController {
     public ResponseEntity<List<DriverPossibilityListResponse>> possibilityDriverFind(@PathVariable(name = "city") String city,
                                                                                      @PathVariable(name = "gu") String gu,
                                                                                      @PathVariable(name = "dong") String dong){
-        log.info("possibility driver find start");
-
         return ResponseEntity
                 .ok(driverService.findPossibilityDriver(city,gu,dong));
     }

@@ -22,7 +22,6 @@ public class DeliveryController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> deliveryOrderRegister(@RequestBody @Valid DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
-        log.info("register order delivery");
 
         deliveryService.registerDeliveryOrder(deliveryOrderRegisterRequest);
 
@@ -33,12 +32,11 @@ public class DeliveryController {
 
     @PutMapping("/complete")
     public ResponseEntity<Object> deliveryComplete(@RequestBody @Valid DeliveryCompleteRequest deliveryCompleteRequest){
-        log.info("complete delivery");
 
         deliveryService.completeDelivery(deliveryCompleteRequest);
 
         return ResponseEntity
-                .noContent()
+                .status(HttpStatus.CREATED)
                 .build();
     }
 
