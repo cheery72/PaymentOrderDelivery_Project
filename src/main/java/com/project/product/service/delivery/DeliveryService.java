@@ -31,8 +31,7 @@ public class DeliveryService {
         Driver driver = driverRepository.findById(deliveryOrderRegisterRequest.getDriverId())
                 .orElseThrow(() -> new NotFoundDriverException("해당 배달원을 찾을 수 없습니다."));
 
-        Order order = orderRepository.findById(deliveryOrderRegisterRequest.getOrderId())
-                .orElseThrow(() -> new NotFoundOrderException("해당 주문을 찾을 수 없습니다."));
+        Order order = orderValidation(deliveryOrderRegisterRequest.getOrderId());
 
         Delivery delivery = Delivery.toDelivery(order,driver);
 
@@ -45,10 +44,14 @@ public class DeliveryService {
         Delivery delivery = deliveryRepository.findById(deliveryCompleteRequest.getDeliveryId())
                 .orElseThrow(() -> new NotFoundDeliveryException("해당 배달을 찾을 수 없습니다."));
 
-        Order order = orderRepository.findById(deliveryCompleteRequest.getOrderId())
-                .orElseThrow(() -> new NotFoundOrderException("해당 주문을 찾을 수 없습니다."));
-
+        Order order = orderValidation(deliveryCompleteRequest.getOrderId());
         order.completeOrder();
         delivery.setDeliveryStatus();
+    }
+
+    private Order orderValidation(Long orderId){
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundOrderException("해당 주문을 찾을 수 없습니다."));
+
     }
 }
