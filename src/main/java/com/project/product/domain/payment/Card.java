@@ -17,6 +17,8 @@ public class Card extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     private String name;
 
     private int money;
