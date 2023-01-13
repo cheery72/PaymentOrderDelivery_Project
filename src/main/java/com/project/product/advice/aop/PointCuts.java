@@ -7,6 +7,6 @@ public class PointCuts {
     @Pointcut("execution(* *..*Controller.*(..))")
     public void allLogController(){}
 
-    @Pointcut("execution(* *..*Service.*(..))")
+    @Pointcut("@annotation(org.springframework.transaction.annotation.Transactional)")
     public void allService(){}
 }

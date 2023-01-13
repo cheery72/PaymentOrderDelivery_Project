@@ -54,8 +54,8 @@ class MemberServiceTest {
         when(memberCouponRepository.save(any()))
                 .thenReturn(coupon);
 
-        Member newMember = memberService.joinMember(memberCreateRequest);
-        memberService.joinProvideCoupon(newMember);
+        Member newMember = memberService.createMember(memberCreateRequest);
+        memberService.createProvideCoupon(newMember);
 
         System.out.println("끝?");
         assertEquals(newMember.getEmail(),"asdf@naver.com");

@@ -36,13 +36,13 @@ public class MemberService implements PaymentService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public Member joinMember(MemberCreateRequest memberCreateRequest) {
+    public Member createMember(MemberCreateRequest memberCreateRequest) {
         return memberRepository.save(Member.memberBuilder(memberCreateRequest));
     }
 
     @Transactional
     @Async
-    public void joinProvideCoupon(Member member) {
+    public void createProvideCoupon(Member member) {
         memberCouponRepository.save(MemberCoupon.joinCreateCouponBuilder(member));
     }
 

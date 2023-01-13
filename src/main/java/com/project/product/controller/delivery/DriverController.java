@@ -23,7 +23,7 @@ public class DriverController {
     @PostMapping("/register")
     public ResponseEntity<Object> driverRegister(@RequestBody @Valid DriverRegisterRequest driverRegisterRequest){
 
-        driverService.registerDriver(driverRegisterRequest);
+        driverService.createDriver(driverRegisterRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

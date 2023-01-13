@@ -17,7 +17,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public void registerFranchiseStore(StoreRegisterRequest storeRegisterRequest){
+    public void createFranchiseStore(StoreRegisterRequest storeRegisterRequest){
         storeRepository.save(Store.toStore(storeRegisterRequest));
     }
 

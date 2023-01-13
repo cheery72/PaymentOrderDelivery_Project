@@ -37,7 +37,7 @@ class ProductServiceTest {
         when(productRepository.save(any()))
                 .thenReturn(saveProduct);
 
-        Product newProduct = productService.registerProduct(productRegisterRequest);
+        Product newProduct = productService.createProduct(productRegisterRequest);
 
         assertEquals(1L,newProduct.getSeller());
         assertEquals("이름",newProduct.getName());

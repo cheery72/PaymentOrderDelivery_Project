@@ -22,7 +22,7 @@ public class StoreController {
     @PostMapping("/register")
     public ResponseEntity<Object> franchiseStoreRegister(@RequestBody @Valid StoreRegisterRequest storeRegisterRequest){
 
-        storeService.registerFranchiseStore(storeRegisterRequest);
+        storeService.createFranchiseStore(storeRegisterRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

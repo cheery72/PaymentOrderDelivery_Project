@@ -25,8 +25,8 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<Object> memberJoin(@RequestBody @Valid MemberCreateRequest memberCreateRequest) throws InterruptedException {
 
-        Member newMember = memberService.joinMember(memberCreateRequest);
-        memberService.joinProvideCoupon(newMember);
+        Member newMember = memberService.createMember(memberCreateRequest);
+        memberService.createProvideCoupon(newMember);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
