@@ -23,7 +23,7 @@ public class DeliveryController {
     @PostMapping("/register")
     public ResponseEntity<Object> deliveryOrderRegister(@RequestBody @Valid DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
 
-        deliveryService.registerDeliveryOrder(deliveryOrderRegisterRequest);
+        deliveryService.createDeliveryOrder(deliveryOrderRegisterRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

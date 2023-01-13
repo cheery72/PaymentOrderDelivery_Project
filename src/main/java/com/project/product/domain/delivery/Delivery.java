@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table
 @Entity
 @NoArgsConstructor
-public class Delivery{
+public class Delivery extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

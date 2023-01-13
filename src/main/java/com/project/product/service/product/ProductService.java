@@ -15,7 +15,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Product registerProduct(ProductRegisterRequest productRegisterRequest){
+    public Product createProduct(ProductRegisterRequest productRegisterRequest){
         Product product = Product.productBuilder(productRegisterRequest);
 
         return productRepository.save(product);

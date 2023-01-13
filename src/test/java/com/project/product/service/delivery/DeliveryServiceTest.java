@@ -71,7 +71,7 @@ public class DeliveryServiceTest {
         when(deliveryRepository.save(any()))
                 .thenReturn(delivery);
 
-        Delivery newDelivery = deliveryService.registerDeliveryOrder(deliveryOrderRegisterRequest);
+        Delivery newDelivery = deliveryService.createDeliveryOrder(deliveryOrderRegisterRequest);
 
         assertEquals(delivery.getCity(),newDelivery.getCity());
         assertEquals(delivery.getDeliveryStatus(), DeliveryStatus.SHIPPING);

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @Aspect
-public class TransactionAspect {
+public class LogTransactionAspect {
+
 
     @Before("com.project.product.advice.aop.PointCuts.allService()")
     public void doTransactionBefore(JoinPoint joinPoint){

@@ -27,7 +27,7 @@ public class DeliveryService {
 
     //Todo: 배달 승인
     @Transactional
-    public Delivery registerDeliveryOrder(DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
+    public Delivery createDeliveryOrder(DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
         Driver driver = driverRepository.findById(deliveryOrderRegisterRequest.getDriverId())
                 .orElseThrow(() -> new NotFoundDriverException("해당 배달원을 찾을 수 없습니다."));
 

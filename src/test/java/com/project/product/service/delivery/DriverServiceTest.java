@@ -49,7 +49,7 @@ public class DriverServiceTest {
         when(driverRepository.save(any()))
                 .thenReturn(driver);
 
-        Driver saveDriver = driverService.registerDriver(requestBuilder);
+        Driver saveDriver = driverService.createDriver(requestBuilder);
 
         assertEquals(saveDriver.getDriverStatus(), DriverStatus.WAITING);
         assertEquals(saveDriver.getName(),requestBuilder.getName());

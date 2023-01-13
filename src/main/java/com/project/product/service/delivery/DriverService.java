@@ -20,7 +20,7 @@ public class DriverService {
     private final DriverRepository driverRepository;
 
     @Transactional
-    public Driver registerDriver(DriverRegisterRequest driverRegisterRequest){
+    public Driver createDriver(DriverRegisterRequest driverRegisterRequest){
         return driverRepository.save(Driver.driverBuilder(driverRegisterRequest));
     }
 
