@@ -73,10 +73,8 @@ public class MemberService implements PaymentService {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(NoSuchElementException::new);
 
-        //Todo: 결제 가능 여부, 결제 금액 확인
         if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
                 && totalPrice <= card.getMoney()){
-            //Todo: 결제 진행
             card.cardPayment(card.getMoney(),totalPrice,0);
             return;
         }

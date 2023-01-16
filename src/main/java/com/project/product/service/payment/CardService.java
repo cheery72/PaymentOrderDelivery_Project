@@ -48,10 +48,8 @@ public class CardService implements PaymentService {
         Card card = cardRepository.findById(orderCreateRequest.getCardId())
                 .orElseThrow(NoSuchElementException::new);
 
-        //Todo: 결제 가능 여부, 결제 금액 확인
         if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
                 && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),discount)){
-            //Todo: 결제 진행
             card.cardPayment(card.getMoney(),orderCreateRequest.getTotalPrice(),discount);
 
             return LocalDateTime.now();
