@@ -7,24 +7,23 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 public class DriverRegisterRequest {
 
     @NotBlank
-    private String name;
+    private final String name;
 
     @NotBlank
-    private String phone;
+    private final String phone;
 
     @NotBlank
-    private String addressCity;
+    private final String addressCity;
 
     @NotBlank
-    private String addressGu;
+    private final String addressGu;
 
     @NotBlank
-    private String addressDong;
+    private final String addressDong;
 }
