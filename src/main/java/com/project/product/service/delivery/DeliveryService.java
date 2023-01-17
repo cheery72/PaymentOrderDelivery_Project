@@ -5,10 +5,8 @@ import com.project.product.domain.delivery.Driver;
 import com.project.product.domain.order.Order;
 import com.project.product.dto.delivery.DeliveryCompleteRequest;
 import com.project.product.dto.delivery.DeliveryOrderRegisterRequest;
-import com.project.product.dto.order.OrderPurchaserAddressResponse;
-import com.project.product.exception.NotFoundDeliveryException;
-import com.project.product.exception.NotFoundDriverException;
-import com.project.product.exception.NotFoundOrderException;
+import com.project.product.exception.ClientException;
+import com.project.product.exception.ErrorCode;
 import com.project.product.repository.delivery.DeliveryRepository;
 import com.project.product.repository.delivery.DriverRepository;
 import com.project.product.repository.order.OrderRepository;
@@ -29,7 +27,7 @@ public class DeliveryService {
     @Transactional
     public Delivery createDeliveryOrder(DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
         Driver driver = driverRepository.findById(deliveryOrderRegisterRequest.getDriverId())
-                .orElseThrow(() -> new NotFoundDriverException("해당 배달원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_DRIVER));
 
         Order order = orderValidation(deliveryOrderRegisterRequest.getOrderId());
 
@@ -42,7 +40,7 @@ public class DeliveryService {
     @Transactional
     public void completeDelivery(DeliveryCompleteRequest deliveryCompleteRequest){
         Delivery delivery = deliveryRepository.findById(deliveryCompleteRequest.getDeliveryId())
-                .orElseThrow(() -> new NotFoundDeliveryException("해당 배달을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_DELIVERY));
 
         Order order = orderValidation(deliveryCompleteRequest.getOrderId());
         order.completeOrder();
@@ -51,7 +49,6 @@ public class DeliveryService {
 
     private Order orderValidation(Long orderId){
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundOrderException("해당 주문을 찾을 수 없습니다."));
-
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_ORDER));
     }
 }

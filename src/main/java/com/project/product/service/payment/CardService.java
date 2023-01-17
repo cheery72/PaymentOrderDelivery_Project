@@ -6,7 +6,8 @@ import com.project.product.domain.payment.CardStatus;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.payment.CardRegisterRequest;
 import com.project.product.dto.payment.MemberCardListResponse;
-import com.project.product.exception.NotPaymentCardException;
+import com.project.product.exception.ClientException;
+import com.project.product.exception.ErrorCode;
 import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.payment.CardRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class CardService implements PaymentService {
             return LocalDateTime.now();
         }
 
-        throw new NotPaymentCardException("카드 금액이 부족합니다.");
+        throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
     }
 
 }
