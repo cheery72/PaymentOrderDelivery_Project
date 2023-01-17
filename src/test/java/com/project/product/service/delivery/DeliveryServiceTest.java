@@ -55,7 +55,7 @@ public class DeliveryServiceTest {
     public void registerDeliveryOrder(){
         DeliveryOrderRegisterRequest deliveryOrderRegisterRequest = new DeliveryOrderRegisterRequest(1L,1L);
         Member member = new Member(1L,null,null,null,null,0,0,0,null,
-                "시","구","동",null,null,null,null);
+                "시","구","동",null,null,null,null,null);
 
         Order order = new Order(1L,1L,15000,3000,"메모",null,null,null,
                 null,null,null,null,member,null,null);

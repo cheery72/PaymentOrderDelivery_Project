@@ -1,10 +1,7 @@
 package com.project.product.domain.review;
 
 import com.project.product.domain.store.Store;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +11,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 public class Review {
 
     @Id
@@ -34,13 +33,4 @@ public class Review {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @Builder
-    public Review(Long id, String title, String content, int likes, List<ReviewComment> comments, Store store) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.likes = likes;
-        this.comments = comments;
-        this.store = store;
-    }
 }

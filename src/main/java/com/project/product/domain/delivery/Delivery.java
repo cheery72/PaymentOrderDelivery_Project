@@ -3,6 +3,7 @@ package com.project.product.domain.delivery;
 import com.project.product.domain.BaseTime;
 import com.project.product.domain.order.Order;
 import com.project.product.dto.order.OrderPurchaserAddressResponse;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @Table
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Delivery extends BaseTime{
 
     @Id
@@ -43,20 +46,6 @@ public class Delivery extends BaseTime{
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
-    @Builder
-    public Delivery(Long id, String city, String gu, String dong, String addressDetail, DeliveryStatus deliveryStatus, LocalDateTime completeTime, LocalDateTime takeOverTime, Driver driver, Order order) {
-        this.id = id;
-        this.city = city;
-        this.gu = gu;
-        this.dong = dong;
-        this.addressDetail = addressDetail;
-        this.deliveryStatus = deliveryStatus;
-        this.completeTime = completeTime;
-        this.takeOverTime = takeOverTime;
-        this.driver = driver;
-        this.order = order;
-    }
 
     public static Delivery toDelivery(Order order, Driver driver){
         return Delivery.builder()

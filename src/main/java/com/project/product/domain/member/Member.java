@@ -13,6 +13,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Member {
 
     @Id
@@ -56,30 +58,6 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    @Builder
-    public Member(Long id, String email, String password, String name, String image, int point, int usedPoint, int receivePoint, MemberStatus memberStatus, String addressCity, String addressGu, String addressDong, String addressDetail, List<MemberCoupon> memberCoupon, ShoppingBasket shoppingBasket, List<Order> orders) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.image = image;
-        this.point = point;
-        this.usedPoint = usedPoint;
-        this.receivePoint = receivePoint;
-        this.memberStatus = memberStatus;
-        this.addressCity = addressCity;
-        this.addressGu = addressGu;
-        this.addressDong = addressDong;
-        this.addressDetail = addressDetail;
-        this.memberCoupon = memberCoupon;
-        this.shoppingBasket = shoppingBasket;
-        this.orders = orders;
-    }
-
-    public void joinCoupon(MemberCoupon memberCoupon) {
-        this.memberCoupon = List.of(memberCoupon);
-    }
-
     public static Member memberBuilder(MemberCreateRequest memberCreateRequest){
         return Member.builder()
                 .email(memberCreateRequest.getEmail())
@@ -94,25 +72,18 @@ public class Member {
                 .build();
     }
 
-    public boolean memberPointCheck(int orderPoint, int memberPoint){
-        if(orderPoint <= memberPoint){
-            return true;
-        }
-        return false;
-    }
-
-    public int memberPointPayment(int totalPrice, int usePoint, Member member,int discount){
+    public int memberPointPayment(int totalPrice, int usePoint, int discount){
         int discountPrice = totalPrice - (totalPrice / 100 * discount);
 
         //  Todo : 포인트 및 카드 결제
         if (usePoint < discountPrice) {
-            this.usedPoint = member.usedPoint + usePoint;
-            this.point = member.getPoint() - usePoint;
+            this.usedPoint += usePoint;
+            this.point -= usePoint;
             return discountPrice - usePoint;
         // Todo : 할인 받은 금액이 요청한 포인트보다 작을때
         }else {
-            this.usedPoint = member.usedPoint + discountPrice;
-            this.point = member.getPoint() - discountPrice;
+            this.usedPoint += discountPrice;
+            this.point -= discountPrice;
         }
 
         return 0;

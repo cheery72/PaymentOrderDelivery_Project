@@ -57,7 +57,7 @@ public class MemberService implements PaymentService {
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
                 .orElseThrow(() -> new NotFoundMemberException("요청한 멤버를 찾을 수 없습니다."));
         if(orderCreateRequest.getUsePoint() <= member.getPoint()){
-            int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), member, discount);
+            int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
 
             if(0 < restPrice) {
                 paymentCardOrder(orderCreateRequest.getCardId(), restPrice);
@@ -75,7 +75,7 @@ public class MemberService implements PaymentService {
 
         if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
                 && totalPrice <= card.getMoney()){
-            card.cardPayment(card.getMoney(),totalPrice,0);
+            card.cardPayment(totalPrice,0);
             return;
         }
         throw new NotPaymentCardException("카드 금액이 부족합니다.");

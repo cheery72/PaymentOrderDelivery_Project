@@ -11,6 +11,8 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Card extends BaseTime {
 
     @Id
@@ -28,15 +30,6 @@ public class Card extends BaseTime {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Builder
-    public Card(Long id, String name, int money, CardStatus cardStatus, Member member) {
-        this.id = id;
-        this.name = name;
-        this.money = money;
-        this.cardStatus = cardStatus;
-        this.member = member;
-    }
-
     public static Card cardBuilder(CardRegisterRequest cardRegisterRequest){
         return Card.builder()
                 .id(cardRegisterRequest.getMemberId())
@@ -46,15 +39,11 @@ public class Card extends BaseTime {
                 .build();
     }
 
-    public void cardPayment(int money, int paymentMoney, int couponDiscount){
-        this.money = money-(paymentMoney - (paymentMoney / 100 * couponDiscount));
+    public void cardPayment(int paymentMoney, int couponDiscount){
+        this.money -= paymentMoney - (paymentMoney / 100 * couponDiscount);
     }
 
-
     public boolean cardPaymentCheck(int money, int paymentMoney, int couponDiscount){
-        if(paymentMoney - (paymentMoney / 100 * couponDiscount) <= money){
-            return true;
-        }
-        return false;
+        return paymentMoney - (paymentMoney / 100 * couponDiscount) <= money;
     }
 }

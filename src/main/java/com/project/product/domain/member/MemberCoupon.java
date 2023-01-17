@@ -1,9 +1,6 @@
 package com.project.product.domain.member;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +9,8 @@ import java.util.List;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class MemberCoupon {
 
     @Id
@@ -25,13 +24,6 @@ public class MemberCoupon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @Builder
-    public MemberCoupon(String name, int discount, Member member) {
-        this.name = name;
-        this.discount = discount;
-        this.member = member;
-    }
 
     public static MemberCoupon joinCreateCouponBuilder(Member member){
         return MemberCoupon.builder()

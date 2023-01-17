@@ -50,7 +50,7 @@ public class CardService implements PaymentService {
 
         if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
                 && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),discount)){
-            card.cardPayment(card.getMoney(),orderCreateRequest.getTotalPrice(),discount);
+            card.cardPayment(orderCreateRequest.getTotalPrice(),discount);
 
             return LocalDateTime.now();
         }

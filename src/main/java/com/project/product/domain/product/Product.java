@@ -3,10 +3,7 @@ package com.project.product.domain.product;
 import com.project.product.domain.member.ShoppingBasket;
 import com.project.product.domain.order.Order;
 import com.project.product.dto.product.ProductRegisterRequest;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table
+@AllArgsConstructor
+@Builder
 public class Product {
 
     @Id
@@ -43,19 +42,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_basket_id")
     private ShoppingBasket shoppingBasket;
-
-    @Builder
-    public Product(Long id, Long seller, String name, int price, String category, ProductStatus productStatus, List<ProductImage> images, Order order, ShoppingBasket shoppingBasket) {
-        this.id = id;
-        this.seller = seller;
-        this.name = name;
-        this.price = price;
-        this.category = category;
-        this.productStatus = productStatus;
-        this.images = images;
-        this.order = order;
-        this.shoppingBasket = shoppingBasket;
-    }
 
     public static Product productBuilder(ProductRegisterRequest productRegisterRequest){
         return Product.builder()

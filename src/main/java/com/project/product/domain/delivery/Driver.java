@@ -2,6 +2,7 @@ package com.project.product.domain.delivery;
 
 import com.project.product.domain.BaseTime;
 import com.project.product.dto.delivery.DriverRegisterRequest;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Driver extends BaseTime {
 
     @Id
@@ -35,18 +38,6 @@ public class Driver extends BaseTime {
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Delivery> deliveryList = new ArrayList<>();
-
-    @Builder
-    public Driver(Long id, String name, String phone, DriverStatus driverStatus, String addressCity, String addressGu, String addressDong, List<Delivery> deliveryList) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.driverStatus = driverStatus;
-        this.addressCity = addressCity;
-        this.addressGu = addressGu;
-        this.addressDong = addressDong;
-        this.deliveryList = deliveryList;
-    }
 
     public static Driver driverBuilder(DriverRegisterRequest driverRegisterRequest){
         return Driver.builder()

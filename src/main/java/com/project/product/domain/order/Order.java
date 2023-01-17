@@ -5,10 +5,7 @@ import com.project.product.domain.product.Product;
 import com.project.product.domain.member.Member;
 import com.project.product.domain.store.Store;
 import com.project.product.dto.order.OrderCreateRequest;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +16,8 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Order {
 
     @Id
@@ -61,25 +60,6 @@ public class Order {
 
     @OneToOne(mappedBy = "order")
     private Delivery delivery;
-
-    @Builder
-    public Order(Long id, Long purchaser, int totalPrice, int usePoint, String purchaserMemo, String adminMemo, LocalDateTime paymentDateTime, LocalDateTime approveDateTime, ApproveStatus approveStatus, PayType payType, OrderStatus orderStatus, List<Product> products, Member member, Store store, Delivery delivery) {
-        this.id = id;
-        this.purchaser = purchaser;
-        this.totalPrice = totalPrice;
-        this.usePoint = usePoint;
-        this.purchaserMemo = purchaserMemo;
-        this.adminMemo = adminMemo;
-        this.paymentDateTime = paymentDateTime;
-        this.approveDateTime = approveDateTime;
-        this.approveStatus = approveStatus;
-        this.payType = payType;
-        this.orderStatus = orderStatus;
-        this.products = products;
-        this.member = member;
-        this.store = store;
-        this.delivery = delivery;
-    }
 
     public static Order orderBuilder(LocalDateTime paymentDate, OrderCreateRequest orderCreateRequest, List<Product> products){
         return Order.builder()
