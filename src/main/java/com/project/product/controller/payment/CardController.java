@@ -22,7 +22,8 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> cardRegister(@RequestBody @Valid CardRegisterRequest cardRegisterRequest){
+    public ResponseEntity<Object> cardRegister(
+            @RequestBody @Valid CardRegisterRequest cardRegisterRequest){
 
         cardService.registerCard(cardRegisterRequest);
 

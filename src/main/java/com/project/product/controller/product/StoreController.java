@@ -20,7 +20,8 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> franchiseStoreRegister(@RequestBody @Valid StoreRegisterRequest storeRegisterRequest){
+    public ResponseEntity<Object> franchiseStoreRegister(
+            @RequestBody @Valid StoreRegisterRequest storeRegisterRequest){
 
         storeService.createFranchiseStore(storeRegisterRequest);
 
@@ -30,7 +31,8 @@ public class StoreController {
     }
 
     @GetMapping("/{storeId}/detail-store")
-    public ResponseEntity<StoreDetailResponse> storeDetailFind(@PathVariable Long storeId){
+    public ResponseEntity<StoreDetailResponse> storeDetailFind(
+            @PathVariable Long storeId){
 
         return ResponseEntity
                 .ok(storeService.findStoreDetail(storeId));

@@ -21,7 +21,8 @@ public class DriverController {
     private final DriverService driverService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> driverRegister(@RequestBody @Valid DriverRegisterRequest driverRegisterRequest){
+    public ResponseEntity<Object> driverRegister(
+            @RequestBody @Valid DriverRegisterRequest driverRegisterRequest){
 
         driverService.createDriver(driverRegisterRequest);
 
@@ -31,9 +32,11 @@ public class DriverController {
     }
 
     @GetMapping("/{city}/{gu}/{dong}/possibility")
-    public ResponseEntity<List<DriverPossibilityListResponse>> possibilityDriverFind(@PathVariable(name = "city") String city,
-                                                                                     @PathVariable(name = "gu") String gu,
-                                                                                     @PathVariable(name = "dong") String dong){
+    public ResponseEntity<List<DriverPossibilityListResponse>> possibilityDriverFind(
+            @PathVariable(name = "city") String city,
+            @PathVariable(name = "gu") String gu,
+            @PathVariable(name = "dong") String dong){
+
         return ResponseEntity
                 .ok(driverService.findPossibilityDriver(city,gu,dong));
     }

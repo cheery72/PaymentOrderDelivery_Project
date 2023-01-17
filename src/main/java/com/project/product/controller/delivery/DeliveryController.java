@@ -21,7 +21,8 @@ public class DeliveryController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Object> deliveryOrderRegister(@RequestBody @Valid DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
+    public ResponseEntity<Object> deliveryOrderRegister(
+            @RequestBody @Valid DeliveryOrderRegisterRequest deliveryOrderRegisterRequest){
 
         deliveryService.createDeliveryOrder(deliveryOrderRegisterRequest);
 
@@ -31,7 +32,8 @@ public class DeliveryController {
     }
 
     @PutMapping("/complete")
-    public ResponseEntity<Object> deliveryComplete(@RequestBody @Valid DeliveryCompleteRequest deliveryCompleteRequest){
+    public ResponseEntity<Object> deliveryComplete(
+            @RequestBody @Valid DeliveryCompleteRequest deliveryCompleteRequest){
 
         deliveryService.completeDelivery(deliveryCompleteRequest);
 
