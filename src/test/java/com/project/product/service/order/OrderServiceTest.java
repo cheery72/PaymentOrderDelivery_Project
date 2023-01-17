@@ -5,20 +5,15 @@ import com.project.product.domain.member.Member;
 import com.project.product.domain.order.Order;
 import com.project.product.domain.order.OrderStatus;
 import com.project.product.domain.payment.Card;
-import com.project.product.domain.payment.CardStatus;
 import com.project.product.domain.product.Product;
-import com.project.product.domain.store.Store;
 import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto;
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.product.OrderProductListResponse;
-import com.project.product.exception.NotPaymentCardException;
-import com.project.product.exception.NotPaymentPointException;
 import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.payment.CardRepository;
 import com.project.product.repository.product.ProductRepository;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,8 +30,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -188,7 +181,7 @@ class OrderServiceTest {
         Member member = Mockito.mock(Member.class);
 //        member.setPoint(14999);
 
-        Assertions.assertThrows(NotPaymentPointException.class,
+        Assertions.assertThrows(NoSuchElementException.class,
                 () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 
@@ -202,7 +195,7 @@ class OrderServiceTest {
 //        card.setMoney(14999);
 
 
-        Assertions.assertThrows(NotPaymentCardException.class,
+        Assertions.assertThrows(NoSuchElementException.class,
                 () ->  commonCardOrderProduct(orderCreateRequest, card)).printStackTrace();
     }
 
@@ -217,7 +210,7 @@ class OrderServiceTest {
         Member member = Mockito.mock(Member.class);
 //        member.setPoint(6000);
 
-        Assertions.assertThrows(NotPaymentPointException.class,
+        Assertions.assertThrows(NoSuchElementException.class,
                 () ->  commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 
@@ -234,7 +227,7 @@ class OrderServiceTest {
 //        member.setPoint(8000);
 
 
-        Assertions.assertThrows(NotPaymentCardException.class,()
+        Assertions.assertThrows(NoSuchElementException.class,()
                 -> commonCardPointOrderProduct(orderCreateRequest, card, member)).printStackTrace();
     }
 

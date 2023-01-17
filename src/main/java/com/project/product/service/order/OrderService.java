@@ -7,7 +7,8 @@ import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.order.OrderPurchaserAddressResponse;
 import com.project.product.dto.order.StoreOrderProductNameListResponse;
 import com.project.product.dto.product.OrderProductListResponse;
-import com.project.product.exception.NotFoundMemberException;
+import com.project.product.exception.ClientException;
+import com.project.product.exception.ErrorCode;
 import com.project.product.repository.member.MemberRepository;
 import com.project.product.repository.order.OrderRepository;
 import com.project.product.repository.product.ProductRepository;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -44,14 +44,20 @@ public class OrderService {
     //Todo: 주문한 물품 전체 조회
     public Page<OrderProductListResponse> findMemberOrderList(Long memberId, Pageable pageable){
         memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundMemberException("요청한 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
 
         return orderRepository.findAllByMemberOrderList(memberId, pageable);
     }
 
     @Transactional
     public void deleteOrder(Long orderId){
+        orderValidation(orderId);
         orderRepository.deleteById(orderId);
+    }
+
+    private Order orderValidation(Long orderId){
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_ORDER));
     }
 
     //Todo: 가게 전체 주문 정보 조회

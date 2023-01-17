@@ -7,9 +7,8 @@ import com.project.product.domain.payment.Card;
 import com.project.product.domain.payment.CardStatus;
 import com.project.product.dto.member.MemberCreateRequest;
 import com.project.product.dto.order.OrderCreateRequest;
-import com.project.product.exception.NotFoundMemberException;
-import com.project.product.exception.NotPaymentCardException;
-import com.project.product.exception.NotPaymentPointException;
+import com.project.product.exception.ClientException;
+import com.project.product.exception.ErrorCode;
 import com.project.product.repository.event.CouponRepository;
 import com.project.product.repository.member.MemberCouponRepository;
 import com.project.product.repository.member.MemberRepository;
@@ -55,7 +54,7 @@ public class MemberService implements PaymentService {
         int discount = coupon.couponExpiryCheck(coupon);
 
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
-                .orElseThrow(() -> new NotFoundMemberException("요청한 멤버를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
         if(orderCreateRequest.getUsePoint() <= member.getPoint()){
             int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
 
@@ -64,7 +63,7 @@ public class MemberService implements PaymentService {
             }
             return LocalDateTime.now();
         }
-        throw new NotPaymentPointException("요청한 포인트가 소지한 포인트보다 높습니다.");
+        throw new ClientException(ErrorCode.REJECT_POINT_PAYMENT);
 
     }
 
@@ -78,6 +77,6 @@ public class MemberService implements PaymentService {
             card.cardPayment(totalPrice,0);
             return;
         }
-        throw new NotPaymentCardException("카드 금액이 부족합니다.");
+        throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
     }
 }
