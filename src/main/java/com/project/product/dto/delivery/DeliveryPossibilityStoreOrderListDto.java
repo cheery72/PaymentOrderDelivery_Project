@@ -12,18 +12,17 @@ import java.util.List;
 public class DeliveryPossibilityStoreOrderListDto {
 
     @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     public static class DeliveryPossibilityStoreOrderListRequest {
 
         @NotBlank
-        private String city;
+        private final String city;
 
         @NotBlank
-        private String gu;
+        private final String gu;
 
         @NotBlank
-        private String dong;
+        private final String dong;
 
     }
 
