@@ -11,7 +11,10 @@ public enum ErrorCode {
     REJECT_ACCOUNT_PAYMENT(-1003,"잔액 부족으로 결제에 실패했습니다.",HttpStatus.FORBIDDEN),
     NOT_FOUND_DELIVERY(-1004,"존재하지 않는 배달 정보 입니다.",HttpStatus.NOT_FOUND),
     NOT_FOUND_DRIVER(-1005,"존재하지 않는 배달원 입니다.",HttpStatus.NOT_FOUND),
-    NOT_FOUND_STORE(-1006,"존재하지 않는 가게 입니다.",HttpStatus.NOT_FOUND);
+    NOT_FOUND_STORE(-1006,"존재하지 않는 가게 입니다.",HttpStatus.NOT_FOUND),
+    NOT_FOUND_COUPON(-1007,"존재하지 않는 쿠폰 입니다.",HttpStatus.NOT_FOUND),
+    NOT_FOUND_CARD(-1008,"존재하지 않는 카드 입니다.",HttpStatus.NOT_FOUND);
+
 
     ErrorCode(Integer code, String message, HttpStatus httpStatus) {
         this.code = code;

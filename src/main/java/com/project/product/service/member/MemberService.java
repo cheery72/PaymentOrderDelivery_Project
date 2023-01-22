@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -31,7 +30,6 @@ public class MemberService implements PaymentService {
 
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
     private final CardRepository cardRepository;
 
     @Transactional
@@ -47,14 +45,11 @@ public class MemberService implements PaymentService {
 
     @Transactional
     @Override
-    public LocalDateTime payment(OrderCreateRequest orderCreateRequest) {
-        Coupon coupon = couponRepository.findById(orderCreateRequest.getCouponId())
-                .orElseThrow(NoSuchElementException::new);
-
-        int discount = coupon.couponExpiryCheck(coupon);
+    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int discount) {
 
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
+
         if(orderCreateRequest.getUsePoint() <= member.getPoint()){
             int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
 
@@ -68,15 +63,21 @@ public class MemberService implements PaymentService {
     }
 
     @Transactional
-    public void paymentCardOrder(Long cardId, int totalPrice) {
+    public void paymentCardOrder(Long cardId, int couponDiscount) {
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
 
-        if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
-                && totalPrice <= card.getMoney()){
-            card.cardPayment(totalPrice,0);
+        if(card.cardStatusCheck(card.getCardStatus())
+                && cardAmountMeasurement(couponDiscount,card.getMoney())){
+
+            card.cardPayment(couponDiscount,0);
             return;
         }
+
         throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
+    }
+
+    private boolean cardAmountMeasurement(int totalPrice, int cardMoney){
+        return totalPrice <= cardMoney;
     }
 }

@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 public class CardService implements PaymentService {
 
     private final CardRepository cardRepository;
-    private final CouponRepository couponRepository;
 
     @Transactional
     public Card registerCard(CardRegisterRequest cardRegisterRequest) {
@@ -40,18 +39,14 @@ public class CardService implements PaymentService {
 
     @Transactional
     @Override
-    public LocalDateTime payment(OrderCreateRequest orderCreateRequest) {
-        Coupon coupon = couponRepository.findById(orderCreateRequest.getCouponId())
-                .orElseThrow(NoSuchElementException::new);
-
-        int discount = coupon.couponExpiryCheck(coupon);
-
+    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int couponDiscount) {
         Card card = cardRepository.findById(orderCreateRequest.getCardId())
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
 
-        if(CardStatus.TRANSACTION_POSSIBILITY.equals(card.getCardStatus())
-                && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),discount)){
-            card.cardPayment(orderCreateRequest.getTotalPrice(),discount);
+        if(card.cardStatusCheck(card.getCardStatus())
+                && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),couponDiscount)){
+
+            card.cardPayment(orderCreateRequest.getTotalPrice(),couponDiscount);
 
             return LocalDateTime.now();
         }
