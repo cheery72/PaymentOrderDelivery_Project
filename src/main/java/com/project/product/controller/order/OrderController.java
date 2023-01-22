@@ -4,9 +4,8 @@ import com.project.product.dto.delivery.DeliveryPossibilityStoreOrderListDto.Del
 import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.dto.order.OrderPurchaserAddressResponse;
 import com.project.product.dto.order.StoreOrderProductNameListResponse;
-import com.project.product.factory.PaymentAbstractFactory;
 import com.project.product.service.order.OrderService;
-import com.project.product.service.payment.PaymentService;
+import com.project.product.service.payment.OrderPaymentFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,15 +21,14 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final PaymentAbstractFactory paymentAbstractFactory;
+    private final OrderPaymentFacade orderPaymentFacade;
     private final OrderService orderService;
 
     @PostMapping("/create-order")
     public ResponseEntity<Object> orderCreate(
             @RequestBody @Valid OrderCreateRequest orderCreateRequest){
 
-        PaymentService service = paymentAbstractFactory.getPayType(orderCreateRequest.getUsePoint(),orderCreateRequest.getPayType());
-        orderService.createOrder(service.payment(orderCreateRequest),orderCreateRequest);
+        orderPaymentFacade.paymentOrder(orderCreateRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

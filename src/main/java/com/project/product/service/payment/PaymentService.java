@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 
 public interface PaymentService {
 
-    LocalDateTime payment(OrderCreateRequest orderCreateRequest);
+    LocalDateTime payment(OrderCreateRequest orderCreateRequest, int couponDiscount);
 }

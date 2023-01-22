@@ -46,4 +46,8 @@ public class Card extends BaseTime {
     public boolean cardPaymentCheck(int money, int paymentMoney, int couponDiscount){
         return paymentMoney - (paymentMoney / 100 * couponDiscount) <= money;
     }
+
+    public boolean cardStatusCheck(CardStatus cardStatus){
+        return CardStatus.TRANSACTION_POSSIBILITY.equals(cardStatus);
+    }
 }
