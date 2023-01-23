@@ -44,40 +44,25 @@ public class MemberService implements PaymentService {
     }
 
     @Transactional
-    @Override
-    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int discount) {
+    public int pointPayment(OrderCreateRequest orderCreateRequest, int discount) {
 
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
 
-        if(orderCreateRequest.getUsePoint() <= member.getPoint()){
-            int restPrice = member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
-
-            if(0 < restPrice) {
-                paymentCardOrder(orderCreateRequest.getCardId(), restPrice);
-            }
-            return LocalDateTime.now();
+        if(memberPointCheck(orderCreateRequest.getUsePoint(), member.getPoint())){
+            return  member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
         }
         throw new ClientException(ErrorCode.REJECT_POINT_PAYMENT);
 
     }
 
-    @Transactional
-    public void paymentCardOrder(Long cardId, int couponDiscount) {
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
-
-        if(card.cardStatusCheck(card.getCardStatus())
-                && cardAmountMeasurement(couponDiscount,card.getMoney())){
-
-            card.cardPayment(couponDiscount,0);
-            return;
-        }
-
-        throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
+    private boolean memberPointCheck(int userPoint, int memberAvailablePoint){
+        return userPoint <= memberAvailablePoint;
     }
 
-    private boolean cardAmountMeasurement(int totalPrice, int cardMoney){
-        return totalPrice <= cardMoney;
+
+    @Override
+    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int couponDiscount) {
+        return null;
     }
 }

@@ -39,12 +39,12 @@ public class Card extends BaseTime {
                 .build();
     }
 
-    public void cardPayment(int paymentMoney, int couponDiscount){
-        this.money -= paymentMoney - (paymentMoney / 100 * couponDiscount);
+    public void cardPayment(int paymentMoney, int restPrice){
+        this.money -= restPrice;
     }
 
-    public boolean cardPaymentCheck(int money, int paymentMoney, int couponDiscount){
-        return paymentMoney - (paymentMoney / 100 * couponDiscount) <= money;
+    public boolean cardPaymentCheck(int money, int paymentMoney, int restPrice){
+        return restPrice <= money;
     }
 
     public boolean cardStatusCheck(CardStatus cardStatus){
