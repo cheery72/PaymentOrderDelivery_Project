@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CardService implements PaymentService {
+public class CardService {
 
     private final CardRepository cardRepository;
 
@@ -37,21 +37,45 @@ public class CardService implements PaymentService {
         return MemberCardListResponse.memberCardListDtoBuilder(cards);
     }
 
+    public LocalDateTime cardCouponPayment(OrderCreateRequest orderCreateRequest, int couponDiscount){
+        return payment(orderCreateRequest,
+                orderCreateRequest.getTotalPrice()-orderCreateRequest.getTotalPrice() / 100 * couponDiscount);
+    }
+
     @Transactional
-    @Override
-    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int couponDiscount) {
+    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int restPrice) {
         Card card = cardRepository.findById(orderCreateRequest.getCardId())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
 
         if(card.cardStatusCheck(card.getCardStatus())
-                && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),couponDiscount)){
+                && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),restPrice)){
 
-            card.cardPayment(orderCreateRequest.getTotalPrice(),couponDiscount);
+            card.cardPayment(orderCreateRequest.getTotalPrice(),restPrice);
 
             return LocalDateTime.now();
         }
 
         throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
+    }
+
+
+    @Transactional
+    public void paymentCardOrder(Long cardId, int couponDiscount) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
+
+        if(card.cardStatusCheck(card.getCardStatus())
+                && cardAmountMeasurement(couponDiscount,card.getMoney())){
+
+            card.cardPayment(couponDiscount,0);
+            return;
+        }
+
+        throw new ClientException(ErrorCode.REJECT_ACCOUNT_PAYMENT);
+    }
+
+    private boolean cardAmountMeasurement(int totalPrice, int cardMoney){
+        return totalPrice <= cardMoney;
     }
 
 }
