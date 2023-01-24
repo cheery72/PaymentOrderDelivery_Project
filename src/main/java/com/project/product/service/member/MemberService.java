@@ -26,11 +26,10 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberService implements PaymentService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
-    private final CardRepository cardRepository;
 
     @Transactional
     public Member createMember(MemberCreateRequest memberCreateRequest) {
@@ -41,28 +40,5 @@ public class MemberService implements PaymentService {
     @Async
     public void createProvideCoupon(Member member) {
         memberCouponRepository.save(MemberCoupon.joinCreateCouponBuilder(member));
-    }
-
-    @Transactional
-    public int pointPayment(OrderCreateRequest orderCreateRequest, int discount) {
-
-        Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
-                .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
-
-        if(memberPointCheck(orderCreateRequest.getUsePoint(), member.getPoint())){
-            return  member.memberPointPayment(orderCreateRequest.getTotalPrice(), orderCreateRequest.getUsePoint(), discount);
-        }
-        throw new ClientException(ErrorCode.REJECT_POINT_PAYMENT);
-
-    }
-
-    private boolean memberPointCheck(int userPoint, int memberAvailablePoint){
-        return userPoint <= memberAvailablePoint;
-    }
-
-
-    @Override
-    public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int couponDiscount) {
-        return null;
     }
 }

@@ -5,6 +5,7 @@ import com.project.product.dto.order.OrderCreateRequest;
 import com.project.product.service.coupon.CouponService;
 import com.project.product.service.member.MemberService;
 import com.project.product.service.order.OrderService;
+import com.project.product.service.point.PointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class OrderPaymentFacade {
 
     private final OrderService orderService;
     private final CouponService couponService;
-    private final MemberService memberService;
+    private final PointService pointService;
     private final CardService cardService;
 
     @Transactional
@@ -27,7 +28,7 @@ public class OrderPaymentFacade {
         LocalDateTime paymentTime = null;
         if(0 < orderCreateRequest.getUsePoint() && (String.valueOf(PayType.ALL).equals(orderCreateRequest.getPayType())
                 || String.valueOf(PayType.POINT).equals(orderCreateRequest.getPayType()))){
-            int restPrice = memberService.pointPayment(orderCreateRequest, couponDiscount);
+            int restPrice = pointService.pointPayment(orderCreateRequest, couponDiscount);
 
             if(0 < restPrice) {
                 paymentTime = cardService.payment(orderCreateRequest, restPrice);
