@@ -21,7 +21,6 @@ public class PointService {
 
     @Transactional
     public int pointPayment(OrderCreateRequest orderCreateRequest, int discount) {
-
         Member member = memberRepository.findById(orderCreateRequest.getPurchaser())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER));
 
