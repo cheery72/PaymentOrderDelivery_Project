@@ -3,6 +3,7 @@ package com.project.product.service.delivery;
 import com.project.product.domain.delivery.Delivery;
 import com.project.product.domain.delivery.Driver;
 import com.project.product.domain.order.Order;
+import com.project.product.domain.order.OrderStatus;
 import com.project.product.dto.delivery.DeliveryCompleteRequest;
 import com.project.product.dto.delivery.DeliveryOrderRegisterRequest;
 import com.project.product.exception.ClientException;
@@ -29,7 +30,7 @@ public class DeliveryService {
         Driver driver = driverRepository.findById(deliveryOrderRegisterRequest.getDriverId())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_DRIVER));
 
-        Order order = orderValidation(deliveryOrderRegisterRequest.getOrderId());
+        Order order = updateOrderStatus(deliveryOrderRegisterRequest.getOrderId(),OrderStatus.SHIPPING);
 
         Delivery delivery = Delivery.toDelivery(order,driver);
 
@@ -42,12 +43,20 @@ public class DeliveryService {
         Delivery delivery = deliveryRepository.findById(deliveryCompleteRequest.getDeliveryId())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_DELIVERY));
 
-        Order order = orderValidation(deliveryCompleteRequest.getOrderId());
-        order.completeOrder();
+        updateOrderStatus(deliveryCompleteRequest.getOrderId(),OrderStatus.COMPLETED);
         delivery.setDeliveryStatus();
     }
 
-    private Order orderValidation(Long orderId){
+    @Transactional
+    public Order updateOrderStatus(Long orderId, OrderStatus orderStatus){
+        Order order = getOrder(orderId);
+        order.setOrderStatus(orderStatus);
+
+        return order;
+    }
+
+
+    private Order getOrder(Long orderId){
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_ORDER));
     }

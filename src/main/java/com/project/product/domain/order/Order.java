@@ -77,7 +77,6 @@ public class Order {
                 .build();
     }
 
-    public void completeOrder(){
-        this.orderStatus = OrderStatus.COMPLETED;
-    }
+    public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus; }
+
 }

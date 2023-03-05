@@ -26,15 +26,13 @@ public class OrderPaymentFacade {
     public void paymentOrder(OrderCreateRequest orderCreateRequest){
         int couponDiscount = couponService.couponActivationCheck(orderCreateRequest.getCouponId());
         LocalDateTime paymentTime = null;
+
         if(0 < orderCreateRequest.getUsePoint() && (String.valueOf(PayType.ALL).equals(orderCreateRequest.getPayType())
                 || String.valueOf(PayType.POINT).equals(orderCreateRequest.getPayType()))){
             int restPrice = pointService.pointPayment(orderCreateRequest, couponDiscount);
 
-            if(0 < restPrice) {
-                paymentTime = cardService.payment(orderCreateRequest, restPrice);
-            }else{
-                paymentTime = LocalDateTime.now();
-            }
+            paymentTime = (restPrice > 0) ? cardService.payment(orderCreateRequest, restPrice) : LocalDateTime.now();
+
         }else if(orderCreateRequest.getUsePoint() == 0 && String.valueOf(PayType.CARD).equals(orderCreateRequest.getPayType())){
             paymentTime = cardService.cardCouponPayment(orderCreateRequest, couponDiscount);
         }
