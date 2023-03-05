@@ -25,6 +25,7 @@ public class OrderPaymentFacade {
     @Transactional
     public void paymentOrder(OrderCreateRequest orderCreateRequest){
         int couponDiscount = couponService.couponActivationCheck(orderCreateRequest.getCouponId());
+
         LocalDateTime paymentTime = null;
 
         if(0 < orderCreateRequest.getUsePoint() && (String.valueOf(PayType.ALL).equals(orderCreateRequest.getPayType())
