@@ -72,18 +72,16 @@ public class Member {
                 .build();
     }
 
-    public int memberPointPayment(int totalPrice, int usePoint, int discount){
-        int discountPrice = totalPrice - (totalPrice / 100 * discount);
-
+    public int memberPointPayment(int usePoint, int restPrice){
         //  Todo : 포인트 및 카드 결제
-        if (usePoint < discountPrice) {
+        if (usePoint < restPrice) {
             this.usedPoint += usePoint;
             this.point -= usePoint;
-            return discountPrice - usePoint;
+            return restPrice - usePoint;
         // Todo : 할인 받은 금액이 요청한 포인트보다 작을때
         }else {
-            this.usedPoint += discountPrice;
-            this.point -= discountPrice;
+            this.usedPoint += restPrice;
+            this.point -= restPrice;
         }
 
         return 0;
