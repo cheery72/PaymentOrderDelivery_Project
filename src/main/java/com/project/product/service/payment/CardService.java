@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CardService {
+public class CardService implements PaymentService<Object>{
 
     private final CardRepository cardRepository;
 
@@ -33,12 +33,8 @@ public class CardService {
         return MemberCardListResponse.memberCardListDtoBuilder(cards);
     }
 
-    public LocalDateTime cardCouponPayment(OrderCreateRequest orderCreateRequest, int couponDiscount){
-        return payment(orderCreateRequest,
-                orderCreateRequest.getTotalPrice()-orderCreateRequest.getTotalPrice() / 100 * couponDiscount);
-    }
-
     @Transactional
+    @Override
     public LocalDateTime payment(OrderCreateRequest orderCreateRequest, int restPrice) {
         Card card = cardRepository.findById(orderCreateRequest.getCardId())
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_CARD));
@@ -46,7 +42,7 @@ public class CardService {
         if(card.cardStatusCheck(card.getCardStatus())
                 && card.cardPaymentCheck(card.getMoney(),orderCreateRequest.getTotalPrice(),restPrice)){
 
-            card.cardPayment(orderCreateRequest.getTotalPrice(),restPrice);
+            card.cardPayment(restPrice);
 
             return LocalDateTime.now();
         }

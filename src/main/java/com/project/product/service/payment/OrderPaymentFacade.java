@@ -1,9 +1,8 @@
 package com.project.product.service.payment;
 
-import com.project.product.domain.order.PayType;
 import com.project.product.dto.order.OrderCreateRequest;
+import com.project.product.factory.PaymentAbstractFactory;
 import com.project.product.service.coupon.CouponService;
-import com.project.product.service.member.MemberService;
 import com.project.product.service.order.OrderService;
 import com.project.product.service.point.PointService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +16,24 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderPaymentFacade {
 
+    private final PaymentAbstractFactory paymentAbstractFactory;
     private final OrderService orderService;
     private final CouponService couponService;
-    private final PointService pointService;
     private final CardService cardService;
 
     @Transactional
     public void paymentOrder(OrderCreateRequest orderCreateRequest){
-        int couponDiscount = couponService.couponActivationCheck(orderCreateRequest.getCouponId());
+        int restPrice = couponService.couponDiscount(orderCreateRequest.getCouponId(),orderCreateRequest.getTotalPrice());
 
         LocalDateTime paymentTime = null;
+        PaymentService<Object> payType = paymentAbstractFactory.getPayType(orderCreateRequest.getPayType());
+        Object payment = payType.payment(orderCreateRequest, restPrice);
 
-        if(0 < orderCreateRequest.getUsePoint() && (String.valueOf(PayType.ALL).equals(orderCreateRequest.getPayType())
-                || String.valueOf(PayType.POINT).equals(orderCreateRequest.getPayType()))){
-            int restPrice = pointService.pointPayment(orderCreateRequest, couponDiscount);
-
-            paymentTime = (restPrice > 0) ? cardService.payment(orderCreateRequest, restPrice) : LocalDateTime.now();
-
-        }else if(orderCreateRequest.getUsePoint() == 0 && String.valueOf(PayType.CARD).equals(orderCreateRequest.getPayType())){
-            paymentTime = cardService.cardCouponPayment(orderCreateRequest, couponDiscount);
+        if (payment instanceof Integer){
+            int paymentAmount = Integer.parseInt(String.valueOf(payment));
+            paymentTime = 0 < paymentAmount ? cardService.payment(orderCreateRequest, paymentAmount) : LocalDateTime.now();
+        }else if(payment instanceof LocalDateTime){
+            paymentTime = LocalDateTime.parse(String.valueOf(payment));
         }
 
         orderService.createOrder(paymentTime,orderCreateRequest);

@@ -28,11 +28,11 @@ public class Coupon {
     @Enumerated(EnumType.STRING)
     private CouponStatus couponStatus;
 
-    public int couponExpiryCheck(Coupon coupon){
+    public int couponExpiry(Coupon coupon, int totalPrice){
         if(CouponStatus.ACTIVATION.equals(coupon.getCouponStatus())){
-            return coupon.getDiscount();
+            return totalPrice - (totalPrice / 100 * coupon.getDiscount());
         }
 
-        return 1;
+        return totalPrice;
     }
 }

@@ -39,7 +39,7 @@ public class Card extends BaseTime {
                 .build();
     }
 
-    public void cardPayment(int paymentMoney, int restPrice){
+    public void cardPayment(int restPrice){
         this.money -= restPrice;
     }
 

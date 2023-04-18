@@ -15,10 +15,11 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    public int couponActivationCheck(Long couponId){
+    public int couponDiscount(Long couponId, int totalPrice){
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_COUPON));
 
-        return coupon.couponExpiryCheck(coupon);
+        return coupon.couponExpiry(coupon, totalPrice);
     }
+
 }
